@@ -1,0 +1,19 @@
+# Arquivos de ambiente (importante!)
+.env
+
+# Logs
+*.log
+
+# Docker
+*.pid
+
+# Sistema
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Backup
+*.bak
+*.tmp

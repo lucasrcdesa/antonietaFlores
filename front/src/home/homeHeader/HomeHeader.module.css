@@ -1,0 +1,155 @@
+.homeHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background-color: #E8D8C8;
+  padding: 1rem 2rem;
+  height: auto;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  box-sizing: border-box;
+}
+
+.leftSection {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
+.logo {
+  height: auto;
+  width: 350px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.rightSection {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 1;
+}
+
+.navButtons {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.navButton {
+  color: #6E5A4E;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  transition: background-color 0.2s, color 0.2s;
+  font-family: 'Segoe UI', sans-serif;
+  font-size: larger;
+}
+
+.navButton:hover {
+  background-color: rgba(110, 90, 78, 0.1);
+  color: #A78F7E;
+}
+
+.menuIcon {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  z-index: 1001;
+  flex-shrink: 0;
+}
+
+.menuIcon span {
+  height: 4px;
+  width: 100%;
+  background: #6E5A4E;
+  margin: 4px 0;
+  border-radius: 2px;
+  transition: 0.3s;
+}
+.overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.3);
+  z-index: 150;
+}
+.overlay.active {
+  display: block;
+}
+.menu {
+  position: fixed;
+  top: 0;
+  left: -300px;
+  width: 280px;
+  height: 100vh;
+  background: #fff0f6;
+  color: #a8326e;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 5rem 1.5rem 2rem;
+  transition: left 0.3s cubic-bezier(.4,0,.2,1);
+  z-index: 300;
+  box-shadow: 2px 0 16px rgba(168, 50, 110, 0.13);
+}
+.menu.open {
+  left: 0;
+}
+.menu a {
+  color: #a8326e;
+  text-decoration: none;
+  margin: 0.75rem 0;
+  font-size: 1.15rem;
+  font-weight: 500;
+  padding: 0.4rem 1rem;
+  border-radius: 8px;
+  width: 100%;
+  transition: background 0.2s, color 0.2s;
+}
+.menu a:hover {
+  background: #ffeef6;
+  color: #E8D8C8;
+}
+
+@media (max-width: 768px) {
+  .navButtons {
+    display: none;
+  }
+
+  .homeHeader {
+    padding: 0.5rem 1rem;
+  }
+
+  .logo {
+    width: 250px;
+  }
+
+  .leftSection {
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .homeHeader {
+    padding: 0.5rem 1rem;
+  }
+
+  .logo {
+    width: 200px;
+  }
+
+  .leftSection {
+    gap: 0.3rem;
+  }
+}
+

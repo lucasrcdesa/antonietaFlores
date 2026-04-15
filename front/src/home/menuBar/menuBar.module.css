@@ -1,0 +1,115 @@
+.overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 998;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.overlay.active {
+  display: block;
+  opacity: 1;
+}
+
+.menuBar {
+  position: fixed;
+  top: 0;
+  left: -320px;
+  width: 280px;
+  height: 100vh;
+  background: linear-gradient(180deg, #F7F2ED 0%, #E8D8C8 100%);
+  display: flex;
+  flex-direction: column;
+  z-index: 999;
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.menuBar.open {
+  left: 0;
+}
+
+.menuHeader {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem;
+  border-bottom: 1px solid rgba(110, 90, 78, 0.15);
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #6E5A4E;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.closeButton:hover {
+  background-color: rgba(110, 90, 78, 0.1);
+  transform: scale(1.1);
+}
+
+.menuItems {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 0;
+  gap: 0.5rem;
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  color: #6E5A4E;
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 500;
+  font-family: 'Segoe UI', sans-serif;
+  transition: background-color 0.2s, color 0.2s, padding-left 0.2s;
+  border-left: 3px solid transparent;
+  border-top: none;
+  border-right: none;
+  border-bottom: none;
+  background: none;
+  width: 100%;
+  cursor: pointer;
+  text-align: left;
+}
+
+.menuItem:hover {
+  background-color: rgba(110, 90, 78, 0.08);
+  color: #A78F7E;
+  padding-left: 2rem;
+  border-left-color: #7A8E7A;
+}
+
+.menuIcon {
+  font-size: 1.3rem;
+}
+
+.menuFooter {
+  padding: 1.5rem;
+  border-top: 1px solid rgba(110, 90, 78, 0.15);
+  text-align: center;
+  background: rgba(122, 142, 122, 0.1);
+}
+
+.menuFooter p {
+  margin: 0 0 0.25rem 0;
+  color: #6E5A4E;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.menuFooter span {
+  color: #9A8F86;
+  font-size: 0.85rem;
+  font-style: italic;
+}

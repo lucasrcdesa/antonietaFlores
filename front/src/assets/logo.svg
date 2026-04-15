@@ -1,0 +1,88 @@
+<svg viewBox="0 0 1440 1080" xmlns="http://www.w3.org/2000/svg">
+  <!-- Top Branch with elegant leaves -->
+  <g>
+    <!-- Main branch line -->
+    <path d="M 200 200 Q 400 180, 600 160 Q 800 140, 1000 170" stroke="#6E5A4E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    
+    <!-- Leaves on top branch - left side -->
+    <g transform="translate(240, 145)">
+      <path d="M 0,0 Q 3,-8 0,-12 Q -3,-8 0,0" fill="none" stroke="#6E5A4E" stroke-width="1.5" stroke-linecap="round"/>
+    </g>
+    <g transform="translate(280, 125)">
+      <path d="M 0,0 Q 3,-8 0,-12 Q -3,-8 0,0" fill="none" stroke="#6E5A4E" stroke-width="1.5" stroke-linecap="round"/>
+    </g>
+    <g transform="translate(320, 110)">
+      <path d="M 0,0 Q 3,-8 0,-12 Q -3,-8 0,0" fill="none" stroke="#6E5A4E" stroke-width="1.5" stroke-linecap="round"/>
+    </g>
+    <g transform="translate(360, 100)">
+      <path d="M 0,0 Q 3,-8 0,-12 Q -3,-8 0,0" fill="none" stroke="#6E5A4E" stroke-width="1.5" stroke-linecap="round"/>
+    </g>
+    <g transform="translate(400, 95)">
+      <path d="M 0,0 Q 3,-8 0,-12 Q -3,-8 0,0" fill="none" stroke="#6E5A4E" stroke-width="1.5" stroke-linecap="round"/>
+    </g>
+    
+    <!-- Flowers/small buds center -->
+    <g transform="translate(600, 145)">
+      <circle cx="0" cy="0" r="4" fill="none" stroke="#6E5A4E" stroke-width="1.5"/>
+      <path d="M -2,-2 L 2,2 M -2,2 L 2,-2" stroke="#6E5A4E" stroke-width="1"/>
+    </g>
+    <g transform="translate(680, 180)">
+      <circle cx="0" cy="0" r="4" fill="none" stroke="#6E5A4E" stroke-width="1.5"/>
+      <path d="M -2,-2 L 2,2 M -2,2 L 2,-2" stroke="#6E5A4E" stroke-width="1"/>
+    </g>
+    <g transform="translate(750, 155)">
+      <circle cx="0" cy="0" r="4" fill="none" stroke="#6E5A4E" stroke-width="1.5"/>
+      <path d="M -2,-2 L 2,2 M -2,2 L 2,-2" stroke="#6E5A4E" stroke-width="1"/>
+    </g>
+    
+    <!-- Leaves on top branch - right side -->
+    <g transform="translate(840, 170)">
+      <path d="M 0,0 Q 3,-8 0,-12 Q -3,-8 0,0" fill="none" stroke="#6E5A4E" stroke-width="1.5" stroke-linecap="round"/>
+    </g>
+    <g transform="translate(920, 160)">
+      <path d="M 0,0 Q 3,-8 0,-12 Q -3,-8 0,0" fill="none" stroke="#6E5A4E" stroke-width="1.5" stroke-linecap="round"/>
+    </g>
+  </g>
+  
+  <!-- Main Text "Antonieta" - Cursive style -->
+  <text x="720" y="420" font-family="cursive" font-size="140" font-style="italic" fill="#6E5A4E" text-anchor="middle" letter-spacing="-2">Antonieta</text>
+  
+  <!-- Subtitle "FLORES" -->
+  <text x="720" y="540" font-family="'Georgia', serif" font-size="72" fill="#6E5A4E" text-anchor="middle" letter-spacing="12" font-weight="400">FLORES</text>
+  
+  <!-- Bottom Branch with elegant leaves -->
+  <g>
+    <!-- Main branch line -->
+    <path d="M 400 850 Q 600 870, 900 820 Q 1100 800, 1200 850" stroke="#6E5A4E" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    
+    <!-- Leaves on bottom branch - left side -->
+    <g transform="translate(450, 860)">
+      <path d="M 0,0 Q -3,8 0,12 Q 3,8 0,0" fill="none" stroke="#6E5A4E" stroke-width="1.5" stroke-linecap="round"/>
+    </g>
+    <g transform="translate(520, 885)">
+      <path d="M 0,0 Q -3,8 0,12 Q 3,8 0,0" fill="none" stroke="#6E5A4E" stroke-width="1.5" stroke-linecap="round"/>
+    </g>
+    
+    <!-- Flowers/small buds center -->
+    <g transform="translate(700, 810)">
+      <circle cx="0" cy="0" r="4" fill="none" stroke="#6E5A4E" stroke-width="1.5"/>
+      <path d="M -2,-2 L 2,2 M -2,2 L 2,-2" stroke="#6E5A4E" stroke-width="1"/>
+    </g>
+    <g transform="translate(780, 790)">
+      <circle cx="0" cy="0" r="4" fill="none" stroke="#6E5A4E" stroke-width="1.5"/>
+      <path d="M -2,-2 L 2,2 M -2,2 L 2,-2" stroke="#6E5A4E" stroke-width="1"/>
+    </g>
+    <g transform="translate(850, 810)">
+      <circle cx="0" cy="0" r="4" fill="none" stroke="#6E5A4E" stroke-width="1.5"/>
+      <path d="M -2,-2 L 2,2 M -2,2 L 2,-2" stroke="#6E5A4E" stroke-width="1"/>
+    </g>
+    
+    <!-- Leaves on bottom branch - right side -->
+    <g transform="translate(950, 830)">
+      <path d="M 0,0 Q -3,8 0,12 Q 3,8 0,0" fill="none" stroke="#6E5A4E" stroke-width="1.5" stroke-linecap="round"/>
+    </g>
+    <g transform="translate(1050, 850)">
+      <path d="M 0,0 Q -3,8 0,12 Q 3,8 0,0" fill="none" stroke="#6E5A4E" stroke-width="1.5" stroke-linecap="round"/>
+    </g>
+  </g>
+</svg>

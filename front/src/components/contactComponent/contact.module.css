@@ -1,0 +1,53 @@
+.contactContainer {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 2rem;
+  background-color: #E8D8C8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  font-family: sans-serif;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.contactContainer h1 {
+  margin-bottom: 1.5rem;
+  color: #6E5A4E;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.contactContainer p {
+  margin: 0.75rem 0;
+  color: #8F7F75;
+  font-size: 1rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.whatsApp {
+  gap: 0.75rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: larger;
+  color: #25D366;
+  margin: 1rem 0;
+  font-weight: 500;
+}
+
+.contactContainer a {
+  margin: 0.5rem;
+  color: #6E5A4E;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.contactContainer a:hover {
+  color: #A78F7E;
+}
+
