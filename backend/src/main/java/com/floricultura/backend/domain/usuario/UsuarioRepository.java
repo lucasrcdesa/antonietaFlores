@@ -1,8 +1,17 @@
 package com.floricultura.backend.domain.usuario;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.security.core.userdetails.UserDetails;
+import java.util.List;
+import java.util.Optional;
 
-public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
-    UserDetails findByLogin(String login);
+
+public interface UsuarioRepository  {
+     Usuario salvar(Usuario usuario);
+
+    Optional<Usuario> buscarPorId(Long id);
+
+    Optional<Usuario> findByLogin(String login);
+
+    List<Usuario> listarTodos();
+
+    void deletar(Long id);
 }

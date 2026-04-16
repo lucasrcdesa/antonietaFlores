@@ -1,4 +1,4 @@
-package com.floricultura.backend.domain.usuario;
+package com.floricultura.backend.infra.persistence.usuario;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -8,10 +8,18 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
-public class Usuario implements UserDetails {
+@Entity
+@Table(name = "usuarios")
+public class UsuarioEntity implements UserDetails {
 
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String login;
     private String senha;
@@ -51,6 +59,24 @@ public String getLogin() {
     return login;
 }
 
+public String getSenha() {
+    return senha;
+}
+
+
+
+public void setId(Long id) {
+    this.id = id;
+}
+
+public void setLogin(String login) {
+    this.login = login;
+}
+
+public void setSenha(String senha) {
+    this.senha = senha;
+}
+
 public LocalDateTime getCreatedAt() {
     return createdAt;
 }
@@ -67,16 +93,4 @@ public void setUpdatedAt(LocalDateTime updatedAt) {
     this.updatedAt = updatedAt;
 }
 
-public Usuario() {
-}
-
-public Usuario(Long id, String login, String senha, LocalDateTime createdAt, LocalDateTime updatedAt) {
-    this.id = id;
-    this.login = login;
-    this.senha = senha;
-    this.createdAt = createdAt;
-    this.updatedAt = updatedAt;
-}
-
-    // Getters, Setters e Constructors...
 }
