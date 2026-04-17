@@ -3,6 +3,7 @@ import { useEffect, useState, useCallback } from "react";
 import styles from "./productScreen.module.css";
 import HomeHeader from "../../home/homeHeader/homeHeader";
 import type { ProductProps } from "../../interfaces/productProps";
+import ProductImage from "../../components/productImage/productImage";
 
 const ProductScreen = () => {
   const [products, setProducts] = useState<ProductProps[]>([]);
@@ -106,10 +107,12 @@ const ProductScreen = () => {
                 className={styles.productCard}
                 onClick={() => handleProductClick(product.id!)}
               >
-                <div
-                  className={styles.productImage}
-                  style={{ backgroundImage: `url(${product.imagemUrl})` }}
-                >
+                <div className={styles.productImage}>
+                  <ProductImage
+                    imageUrl={product.imagemUrl}
+                    alt={product.nome}
+                    className={styles.productImageContent}
+                  />
                   <span className={styles.categoryBadge}>{product.categoria}</span>
                 </div>
                 <div className={styles.productInfo}>
