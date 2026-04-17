@@ -36,7 +36,7 @@ const ManagementScreen = () => {
     const loadProdutos = useCallback(async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('http://localhost:8080/api/produtos', {
+            const response = await fetch('https://antonietaflores:8080/api/produtos', {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -71,8 +71,8 @@ const ManagementScreen = () => {
 
         try {
             const url = editingProduto
-                ? `http://localhost:8080/api/produtos/${editingProduto.id}`
-                : 'http://localhost:8080/api/produtos';
+                ? `https://antonietaflores:8080/api/produtos/${editingProduto.id}`
+                : 'https://antonietaflores:8080/api/produtos';
 
             const method = editingProduto ? 'PUT' : 'POST';
 
@@ -107,7 +107,7 @@ const ManagementScreen = () => {
 
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch(`http://localhost:8080/api/produtos/${id}`, {
+            const response = await fetch(`https://antonietaflores:8080/api/produtos/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`
