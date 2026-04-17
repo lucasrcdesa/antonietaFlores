@@ -14,7 +14,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.floricultura.backend.domain.usuario.UsuarioRepository;
 
 import java.io.IOException;
-import java.util.List;
 
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
@@ -25,20 +24,17 @@ public class SecurityFilter extends OncePerRequestFilter {
     @Autowired
     private UsuarioRepository repository;
 
+    // 🔥 IGNORA ROTAS PÚBLICAS (LOGIN)
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        return request.getServletPath().equals("/auth/login");
+    }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain) throws ServletException, IOException {
-
-        String path = request.getServletPath();
-
-        // 🔥 Rotas públicas (não precisam de token)
-        List<String> publicRoutes = List.of("/auth/login");
-
-        if (publicRoutes.contains(path)) {
-            filterChain.doFilter(request, response);
-            return;
-        }
+                                   HttpServletResponse response,
+                                   FilterChain filterChain)
+            throws ServletException, IOException {
 
         try {
             var tokenJWT = recuperarToken(request);
@@ -59,7 +55,7 @@ public class SecurityFilter extends OncePerRequestFilter {
             }
 
         } catch (Exception e) {
-            // 🔥 Evita quebrar a API se o token estiver inválido
+            // 🔥 Não quebra a requisição por causa de token inválido
             System.out.println("Erro no filtro JWT: " + e.getMessage());
         }
 
