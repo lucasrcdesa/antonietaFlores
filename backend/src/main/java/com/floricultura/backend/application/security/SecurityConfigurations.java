@@ -25,16 +25,18 @@ public class SecurityConfigurations {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.csrf(csrf -> csrf.disable())
+        return http
+                .csrf(csrf -> csrf.disable())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(req -> {
-                    // Libera o acesso para o endpoint de login
-                    req.requestMatchers(HttpMethod.POST, "/auth/login").permitAll();
-                    // Bloqueia qualquer outra requisição para usuários não autenticados
-                    req.anyRequest().authenticated();
-                })
-                // Aqui dizemos: "Spring, antes de fazer sua verificação padrão, 
-                // use o meu 'securityFilter' para checar o token JWT"
+                .authorizeHttpRequests(auth -> auth
+                        // 🔥 LIBERA COMPLETAMENTE O LOGIN
+                        .requestMatchers("/auth/login").permitAll()
+                        .anyRequest().authenticated())
+                // 🔥 DESATIVA AUTENTICAÇÕES PADRÃO (MUITO IMPORTANTE)
+                .formLogin(form -> form.disable())
+                .httpBasic(basic -> basic.disable())
+
+                // 🔥 SEU FILTRO JWT
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
