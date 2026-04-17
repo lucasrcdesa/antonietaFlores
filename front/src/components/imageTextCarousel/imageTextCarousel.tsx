@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import florbackground  from "../../assets/florbackground.png";
-import background  from "../../assets/background.jpg";
-import vite  from "../../assets/vite.svg";
+import capa from "../../assets/capa.jpeg";
+import capa2 from "../../assets/capa2.jpeg";
+import capa3 from "../../assets/capa3.jpeg";
 
 
 
@@ -10,19 +10,19 @@ import styles from "./imageTextCarousel.module.css";
 
 const slides = [
   {
-    image: florbackground,
+    image: capa2,
     title: "Bem-vindo à Antonieta Flores!",
     description:
       "Flores frescas, arranjos exclusivos e carinho em cada detalhe. Deixe seu dia mais colorido com a gente!",
   },
   {
-    image: background,
+    image: capa,
     title: "Arranjos feitos com amor",
     description:
       "Escolha o presente perfeito para cada ocasião e surpreenda quem você ama com delicadeza e estilo.",
   },
   {
-    image: vite,
+    image: capa3,
     title: "Entrega rápida e segura",
     description:
       "Do pedido à entrega, cuidamos de cada passo para que suas flores cheguem lindas e frescas.",
