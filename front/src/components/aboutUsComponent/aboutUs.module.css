@@ -61,14 +61,15 @@
     flex-direction: column;
     height: auto;
     padding: 1rem;
-    margin: 0 1rem;
+    margin: 0 auto 1.5rem;
     max-width: calc(100% - 2rem);
+    box-sizing: border-box;
   }
 
   .sectionTitle {
     flex: 0 0 auto;
     width: 100%;
-    padding: 1.5rem;
+    padding: 1.5rem 1rem;
     border-radius: 14px 14px 0 0;
   }
 
