@@ -32,7 +32,7 @@ public class SecurityConfigurations {
     @Autowired
     private AutenticacaoService autenticacaoService;
 
-    // 🔥 CONFIGURAÇÃO PRINCIPAL
+     // 🔥 CONFIG PRINCIPAL
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
@@ -41,7 +41,7 @@ public class SecurityConfigurations {
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/login").permitAll() // libera login
+                        .requestMatchers("/auth/login").permitAll()
                         .anyRequest().authenticated()
                 )
 
