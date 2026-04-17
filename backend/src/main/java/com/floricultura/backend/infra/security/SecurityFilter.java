@@ -26,10 +26,11 @@ public class SecurityFilter extends OncePerRequestFilter {
     @Autowired
     private UsuarioRepository repository;
 
-    // 🔥 IGNORA ROTAS PÚBLICAS (LOGIN)
+    // 🔥 IGNORA ROTAS PÚBLICAS (LOGIN E IMAGENS)
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        return request.getServletPath().equals("/auth/login");
+        String path = request.getServletPath();
+        return path.equals("/auth/login") || path.startsWith("/api/imagens/");
     }
 
     @Override
