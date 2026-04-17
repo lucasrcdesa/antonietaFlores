@@ -13,7 +13,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/login")
+@RequestMapping("/auth/login")
 public class AutenticacaoResource {
 
     @Autowired

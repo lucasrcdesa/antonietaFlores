@@ -29,7 +29,7 @@ public class SecurityConfigurations {
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(req -> {
                     // Libera o acesso para o endpoint de login
-                    req.requestMatchers(HttpMethod.POST, "/login").permitAll();
+                    req.requestMatchers(HttpMethod.POST, "/auth/login").permitAll();
                     // Bloqueia qualquer outra requisição para usuários não autenticados
                     req.anyRequest().authenticated();
                 })

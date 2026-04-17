@@ -33,7 +33,7 @@ public class SecurityFilter extends OncePerRequestFilter {
         String path = request.getServletPath();
 
         // 🔥 Rotas públicas (não precisam de token)
-        List<String> publicRoutes = List.of("/login");
+        List<String> publicRoutes = List.of("/auth/login");
 
         if (publicRoutes.contains(path)) {
             filterChain.doFilter(request, response);
