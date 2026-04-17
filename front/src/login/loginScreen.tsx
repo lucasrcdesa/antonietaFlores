@@ -22,7 +22,7 @@ const LoginScreen = () => {
         setError('');
 
         try {
-            const response = await fetch('https://antonietaflores:8080/auth/login', {
+            const response = await fetch('/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
