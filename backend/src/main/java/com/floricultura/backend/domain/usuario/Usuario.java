@@ -1,16 +1,8 @@
 package com.floricultura.backend.domain.usuario;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.List;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-
-public class Usuario implements UserDetails {
-
+public class Usuario {
 
     private Long id;
     private String login;
@@ -18,37 +10,24 @@ public class Usuario implements UserDetails {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    // Métodos da interface UserDetails
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Por enquanto, todo usuário é um ADMIN
-        return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
+    public String getPassword() {
+        return senha;
     }
 
-    @Override
-    public String getPassword() { return senha; }
-
-    @Override
-    public String getUsername() { return login; }
-
-    @Override
-    public boolean isAccountNonExpired() { return true; }
-
-    @Override
-    public boolean isAccountNonLocked() { return true; }
-
-    @Override
-    public boolean isCredentialsNonExpired() { return true; }
-
-    @Override
-    public boolean isEnabled() { return true; }
+    public String getUsername() {
+        return login;
+    }
 
     public Long getId() {
-    return id;
-}
+        return id;
+    }
 
 public String getLogin() {
     return login;
+}
+
+public String getSenha() {
+    return senha;
 }
 
 public LocalDateTime getCreatedAt() {

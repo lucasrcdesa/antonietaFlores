@@ -8,9 +8,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.floricultura.backend.application.security.UsuarioSecurityAdapter;
 import com.floricultura.backend.domain.usuario.UsuarioRepository;
 
 import java.io.IOException;
@@ -44,10 +46,11 @@ public class SecurityFilter extends OncePerRequestFilter {
                 var usuario = repository.findByLogin(subject);
 
                 if (usuario.isPresent()) {
+                    UserDetails userDetails = new UsuarioSecurityAdapter(usuario.get());
                     var authentication = new UsernamePasswordAuthenticationToken(
-                            usuario.get(),
+                            userDetails,
                             null,
-                            usuario.get().getAuthorities()
+                            userDetails.getAuthorities()
                     );
 
                     SecurityContextHolder.getContext().setAuthentication(authentication);
