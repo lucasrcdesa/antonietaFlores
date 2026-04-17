@@ -320,7 +320,7 @@ const ManagementScreen = () => {
                             <div className={styles.formGroup}>
                                 <label>URL da Imagem</label>
                                 <input
-                                    type="url"
+                                    type="text"
                                     value={formData.imagemUrl}
                                     onChange={(e) => setFormData({...formData, imagemUrl: e.target.value})}
                                 />
