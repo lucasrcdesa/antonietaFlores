@@ -23,14 +23,16 @@ public class AutenticacaoResource {
     private TokenService tokenService;
 
     @PostMapping
-    public ResponseEntity<DadosTokenJWT> efetuarLogin(@RequestBody @Valid DadosAutenticacao dados) {
-        var authenticationToken = new UsernamePasswordAuthenticationToken(dados.login(), dados.senha());
-        var authentication = manager.authenticate(authenticationToken);
+public ResponseEntity<DadosTokenJWT> efetuarLogin(@RequestBody @Valid DadosAutenticacao dados) {
+    var authenticationToken = new UsernamePasswordAuthenticationToken(dados.login(), dados.senha());
+    var authentication = manager.authenticate(authenticationToken);
 
-        var tokenJWT = tokenService.gerarToken((Usuario) authentication.getPrincipal());
+    var usuario = (com.floricultura.backend.infra.persistence.usuario.UsuarioEntity) authentication.getPrincipal();
 
-        return ResponseEntity.ok(new DadosTokenJWT(tokenJWT));
-    }
+    var tokenJWT = tokenService.gerarToken(usuario);
+
+    return ResponseEntity.ok(new DadosTokenJWT(tokenJWT));
+}
 
     // Record auxiliar para o JSON de entrada
     public record DadosAutenticacao(String login, String senha) {}
