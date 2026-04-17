@@ -1,65 +1,64 @@
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState, useCallback } from "react";
 import styles from "./productScreen.module.css";
 import HomeHeader from "../../home/homeHeader/homeHeader";
-
-// Dados mock para exemplo
-const mockProducts = [
-  {
-    id: 1,
-    name: "Buquê Romântico",
-    description: "Rosas vermelhas com folhagens delicadas",
-    price: 89.90,
-    category: "Buquês",
-    image: "https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=400"
-  },
-  {
-    id: 2,
-    name: "Arranjo Primavera",
-    description: "Mix de flores coloridas da estação",
-    price: 129.90,
-    category: "Arranjos",
-    image: "https://images.unsplash.com/photo-1561181286-d3fee7d55364?w=400"
-  },
-  {
-    id: 3,
-    name: "Cesta de Girassóis",
-    description: "Girassóis frescos em cesta rústica",
-    price: 159.90,
-    category: "Cestas",
-    image: "https://images.unsplash.com/photo-1551731409-43eb3e517a1a?w=400"
-  },
-  {
-    id: 4,
-    name: "Mimo Especial",
-    description: "Pequeno arranjo para presentear",
-    price: 59.90,
-    category: "Mimos",
-    image: "https://images.unsplash.com/photo-1567696911980-2eed69a46042?w=400"
-  },
-  {
-    id: 5,
-    name: "Buquê de Noiva",
-    description: "Elegante buquê para casamentos",
-    price: 249.90,
-    category: "Noivas",
-    image: "https://images.unsplash.com/photo-1522057306606-8d84dfe6b612?w=400"
-  },
-  {
-    id: 6,
-    name: "Arranjo Tropical",
-    description: "Flores tropicais exóticas",
-    price: 189.90,
-    category: "Arranjos",
-    image: "https://images.unsplash.com/photo-1508610048659-a06b669e3321?w=400"
-  },
-];
+import type { ProductProps } from "../../interfaces/productProps";
 
 const ProductScreen = () => {
+  const [products, setProducts] = useState<ProductProps[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<ProductProps[]>([]);
+  const [categories, setCategories] = useState<string[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>("Todos");
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
+  const fetchProducts = useCallback(async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch('/api/produtos', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (response.ok) {
+        const data: ProductProps[] = await response.json();
+        // Filtrar apenas produtos ativos
+        const activeProducts = data.filter(product => product.ativo);
+        setProducts(activeProducts);
+        setFilteredProducts(activeProducts);
+
+        // Extrair categorias únicas e ordenar alfabeticamente
+        const uniqueCategories = [...new Set(activeProducts.map(product => product.categoria))].sort();
+        setCategories(uniqueCategories);
+      } else if (response.status === 401) {
+        // Token expirado, redirecionar para login
+        navigate('/login');
+      }
+    } catch (error) {
+      console.error('Erro ao carregar produtos:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, [navigate]);
+
+  const handleCategoryFilter = (category: string) => {
+    setSelectedCategory(category);
+    if (category === "Todos") {
+      setFilteredProducts(products);
+    } else {
+      const filtered = products.filter(product => product.categoria === category);
+      setFilteredProducts(filtered);
+    }
+  };
 
   const handleProductClick = (id: number) => {
     navigate(`/produtos/${id}`);
   };
+
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
 
   return (
     <div className={styles.container}>
@@ -74,39 +73,58 @@ const ProductScreen = () => {
         </section>
 
         <section className={styles.filtersSection}>
-          <button className={`${styles.filterBtn} ${styles.active}`}>Todos</button>
-          <button className={styles.filterBtn}>Buquês</button>
-          <button className={styles.filterBtn}>Arranjos</button>
-          <button className={styles.filterBtn}>Cestas</button>
-          <button className={styles.filterBtn}>Mimos</button>
-          <button className={styles.filterBtn}>Noivas</button>
+          <button
+            className={`${styles.filterBtn} ${selectedCategory === "Todos" ? styles.active : ""}`}
+            onClick={() => handleCategoryFilter("Todos")}
+          >
+            Todos
+          </button>
+          {categories.map((category) => (
+            <button
+              key={category}
+              className={`${styles.filterBtn} ${selectedCategory === category ? styles.active : ""}`}
+              onClick={() => handleCategoryFilter(category)}
+            >
+              {category}
+            </button>
+          ))}
         </section>
 
         <section className={styles.productsGrid}>
-          {mockProducts.map((product) => (
-            <div 
-              key={product.id} 
-              className={styles.productCard}
-              onClick={() => handleProductClick(product.id)}
-            >
-              <div 
-                className={styles.productImage}
-                style={{ backgroundImage: `url(${product.image})` }}
+          {loading ? (
+            <div className={styles.loading}>
+              <p>Carregando produtos...</p>
+            </div>
+          ) : filteredProducts.length === 0 ? (
+            <div className={styles.emptyState}>
+              <p>Nenhum produto encontrado nesta categoria.</p>
+            </div>
+          ) : (
+            filteredProducts.map((product) => (
+              <div
+                key={product.id}
+                className={styles.productCard}
+                onClick={() => handleProductClick(product.id!)}
               >
-                <span className={styles.categoryBadge}>{product.category}</span>
-              </div>
-              <div className={styles.productInfo}>
-                <h3 className={styles.productName}>{product.name}</h3>
-                <p className={styles.productDescription}>{product.description}</p>
-                <div className={styles.productFooter}>
-                  <span className={styles.productPrice}>
-                    R$ {product.price.toFixed(2).replace(".", ",")}
-                  </span>
-                  <button className={styles.viewBtn}>Ver mais</button>
+                <div
+                  className={styles.productImage}
+                  style={{ backgroundImage: `url(${product.imagemUrl})` }}
+                >
+                  <span className={styles.categoryBadge}>{product.categoria}</span>
+                </div>
+                <div className={styles.productInfo}>
+                  <h3 className={styles.productName}>{product.nome}</h3>
+                  <p className={styles.productDescription}>{product.descricao}</p>
+                  <div className={styles.productFooter}>
+                    <span className={styles.productPrice}>
+                      R$ {product.preco.toFixed(2).replace(".", ",")}
+                    </span>
+                    <button className={styles.viewBtn}>Ver mais</button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </section>
       </main>
     </div>
