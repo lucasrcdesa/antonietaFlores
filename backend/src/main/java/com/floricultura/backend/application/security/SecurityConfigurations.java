@@ -42,6 +42,7 @@ public class SecurityConfigurations {
 
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/login", "/auth/register").permitAll()
+                        .requestMatchers("/api/imagens/**").permitAll()
                         .anyRequest().authenticated()
                 )
 
