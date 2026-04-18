@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 import java.io.IOException;
 import java.util.Optional;
 
@@ -28,21 +30,26 @@ public class ImagensResource {
         this.imageLocation = imageLocation;
     }
 
-    @GetMapping("/{path:.+}")
-    public ResponseEntity<Resource> buscarImagem(@PathVariable String path) throws IOException {
-        String normalizedPath = path.startsWith("/") ? path.substring(1) : path;
-        Resource resource = resourceLoader.getResource(imageLocation + normalizedPath);
+    @GetMapping("/**")
+public ResponseEntity<Resource> buscarImagem(HttpServletRequest request) throws IOException {
 
-        if (!resource.exists() || !resource.isReadable()) {
-            return ResponseEntity.notFound().build();
-        }
+    String fullPath = request.getRequestURI();
 
-        Optional<MediaType> mediaType = MediaTypeFactory.getMediaType(resource);
-        MediaType contentType = mediaType.orElse(MediaType.APPLICATION_OCTET_STREAM);
+    // remove /api/imagens/
+    String path = fullPath.replace("/api/imagens/", "");
 
-        return ResponseEntity.ok()
-                .contentType(contentType)
-                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
-                .body(resource);
+    Resource resource = resourceLoader.getResource(imageLocation + path);
+
+    if (!resource.exists() || !resource.isReadable()) {
+        return ResponseEntity.notFound().build();
     }
+
+    Optional<MediaType> mediaType = MediaTypeFactory.getMediaType(resource);
+    MediaType contentType = mediaType.orElse(MediaType.APPLICATION_OCTET_STREAM);
+
+    return ResponseEntity.ok()
+            .contentType(contentType)
+            .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
+            .body(resource);
+}
 }
