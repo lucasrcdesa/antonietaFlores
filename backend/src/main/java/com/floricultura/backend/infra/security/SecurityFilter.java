@@ -32,13 +32,19 @@ public class SecurityFilter extends OncePerRequestFilter {
         String path = request.getServletPath();
         String method = request.getMethod();
 
+        // Sempre libera OPTIONS (CORS preflight)
+        if (method.equals("OPTIONS")) {
+            return true;
+        }
+
         // Libera login
         if (path.equals("/login")) {
             return true;
         }
 
-        // Libera imagens
+        // Libera imagens (com ou sem barra no final)
         if (path.startsWith("/api/imagens")) {
+            System.out.println("🖼️ Liberando acesso a imagem: " + path);
             return true;
         }
 
@@ -47,6 +53,7 @@ public class SecurityFilter extends OncePerRequestFilter {
             return true;
         }
 
+        System.out.println("🔒 Filtro JWT aplicado para: " + method + " " + path);
         return false;
     }
 

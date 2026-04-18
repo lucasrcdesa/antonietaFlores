@@ -49,8 +49,7 @@ public class SecurityConfigurations {
 
                 .authorizeHttpRequests(auth -> auth
                         // Rotas públicas
-                        .requestMatchers("/login").permitAll()
-                        .requestMatchers("/api/imagens/**").permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()  // CORS preflight
                         .requestMatchers(HttpMethod.GET, "/api/produtos", "/api/produtos/**").permitAll()
 
                         // Rotas que exigem autenticação
