@@ -38,7 +38,7 @@ public class SecurityFilter extends OncePerRequestFilter {
         }
 
         // Libera login
-        if (path.equals("/login")) {
+        if (path.equals("/auth/login")) {
             return true;
         }
 
