@@ -38,7 +38,7 @@ public class SecurityFilter extends OncePerRequestFilter {
         }
 
         // Libera imagens
-        if (path.startsWith("/api/imagens/")) {
+        if (path.startsWith("/api/imagens")) {
             return true;
         }
 
