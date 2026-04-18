@@ -27,7 +27,6 @@ public class SecurityConfigurations {
     @Autowired
     private SecurityFilter securityFilter;
 
-    // 🔥 CONFIG PRINCIPAL
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
@@ -36,30 +35,40 @@ public class SecurityConfigurations {
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 .authorizeHttpRequests(auth -> auth
-                        // 🔥 LIBERA LOGIN CORRETAMENTE
+
+                        // 🔓 LOGIN
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
 
-                        // 🔥 TODO RESTO PROTEGIDO
+                        // 🔓 PRODUTOS (público)
+                        .requestMatchers(HttpMethod.GET, "/api/produtos", "/api/produtos/**").permitAll()
+
+                        // 🔓 IMAGENS
+                        .requestMatchers(HttpMethod.GET, "/api/imagens/**").permitAll()
+
+                        // 🔓 CORS (preflight)
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
+                        // 🔒 TODO RESTO
                         .anyRequest().authenticated()
                 )
 
-                // 🔥 DESATIVA PADRÕES
+                // 🔥 desativa padrões do Spring
                 .formLogin(form -> form.disable())
                 .httpBasic(basic -> basic.disable())
 
-                // 🔥 FILTRO JWT
+                // 🔥 JWT filter
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
 
                 .build();
     }
 
-    // 🔥 MANAGER (necessário pro login funcionar)
+    // 🔥 Necessário pro login funcionar
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
 
-    // 🔥 SENHA
+    // 🔥 Encoder de senha
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
