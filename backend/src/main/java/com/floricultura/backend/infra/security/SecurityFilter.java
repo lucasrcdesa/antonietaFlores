@@ -30,7 +30,24 @@ public class SecurityFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getServletPath();
-        return path.equals("/auth/login") || path.startsWith("/api/imagens/");
+        String method = request.getMethod();
+
+        // Libera login
+        if (path.equals("/login")) {
+            return true;
+        }
+
+        // Libera imagens
+        if (path.startsWith("/api/imagens/")) {
+            return true;
+        }
+
+        // Libera GET de produtos
+        if (path.startsWith("/api/produtos") && method.equals("GET")) {
+            return true;
+        }
+
+        return false;
     }
 
     @Override
