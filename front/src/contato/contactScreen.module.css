@@ -1,0 +1,87 @@
+.contactContainer {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #e8d8c8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'Segoe UI', 'Dancing Script', cursive, sans-serif;
+}
+
+.contentWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 2rem 1rem 3rem;
+  box-sizing: border-box;
+}
+
+.sectionCard {
+  width: 100%;
+  max-width: 900px;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 2px 16px rgba(168, 50, 110, 0.07);
+  padding: 2rem 1.5rem;
+}
+
+.title {
+  color: #a8326e;
+  font-size: clamp(1.8rem, 3.2vw, 2.4rem);
+  margin: 0 0 0.75rem;
+  font-family: 'Dancing Script', cursive, sans-serif;
+}
+
+.description {
+  color: #6e5a4e;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.contactGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.contactItem {
+  background: #fff8f2;
+  border: 1px solid rgba(110, 90, 78, 0.15);
+  border-radius: 14px;
+  padding: 1rem;
+}
+
+.contactItem h2 {
+  margin: 0 0 0.35rem;
+  color: #a8326e;
+  font-size: 1.1rem;
+}
+
+.contactItem p {
+  margin: 0;
+  color: #6e5a4e;
+  line-height: 1.5;
+}
+
+@media (max-width: 900px) {
+  .contactGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .contentWrapper {
+    padding: 1rem 0.75rem 2rem;
+  }
+
+  .sectionCard {
+    padding: 1.2rem 1rem;
+    border-radius: 14px;
+  }
+
+  .contactGrid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+}

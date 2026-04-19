@@ -36,14 +36,14 @@ const MenuBar = ({ isOpen, onClose }: MenuBarProps) => {
             <span className={styles.menuIcon}><FlowerIcon/></span>
             Produtos
           </button>
-          <a href="#sobre" className={styles.menuItem} onClick={() => handleNavigation("/sobre")}>
+          <button type="button" className={styles.menuItem} onClick={() => handleNavigation("/sobre")}>
             <span className={styles.menuIcon}><BookIcon/></span>
             Sobre
-          </a>
-          <a href="#contato" className={styles.menuItem} onClick={() => handleNavigation("/contatos")}>
+          </button>
+          <button type="button" className={styles.menuItem} onClick={() => handleNavigation("/contato")}>
             <span className={styles.menuIcon}><PhoneIcon/></span>
             Contato
-          </a>
+          </button>
         </div>
         <div className={styles.menuFooter}>
           <p>Antonieta Flores</p>

@@ -50,6 +50,9 @@
   transition: background-color 0.2s, color 0.2s;
   font-family: 'Segoe UI', sans-serif;
   font-size: larger;
+  border: none;
+  background: transparent;
+  cursor: pointer;
 }
 
 .navButton:hover {

@@ -1,0 +1,60 @@
+.aboutContainer {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #e8d8c8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'Segoe UI', 'Dancing Script', cursive, sans-serif;
+}
+
+.contentWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 2rem 1rem 3rem;
+  box-sizing: border-box;
+}
+
+.sectionCard {
+  width: 100%;
+  max-width: 900px;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 2px 16px rgba(168, 50, 110, 0.07);
+  padding: 2rem 1.5rem;
+}
+
+.title {
+  color: #a8326e;
+  font-size: clamp(1.9rem, 3.4vw, 2.6rem);
+  margin: 0 0 1rem;
+  font-family: 'Dancing Script', cursive, sans-serif;
+}
+
+.text {
+  color: #6e5a4e;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  margin: 0 0 1rem;
+}
+
+.text:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 640px) {
+  .contentWrapper {
+    padding: 1rem 0.75rem 2rem;
+  }
+
+  .sectionCard {
+    padding: 1.2rem 1rem;
+    border-radius: 14px;
+  }
+
+  .text {
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+}

@@ -1,23 +1,28 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./HomeHeader.module.css";
 import logo from "../../assets/logo_transparente.png";
 import MenuBar from "../menuBar/menuBar";
 
 const HomeHeader = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleHomeButton = () => {
-   navigation.navigate('/');
-  }
-const handleProdutosButton = () => {
-   navigation.navigate('/produtos');
-  }
-const handleSobreButton = () => {
-   navigation.navigate('/sobre');
-  }
-const handleContatoButton = () => {
-   navigation.navigate('/contato');
-  }
+    navigate("/");
+  };
+
+  const handleProdutosButton = () => {
+    navigate("/produtos");
+  };
+
+  const handleSobreButton = () => {
+    navigate("/sobre");
+  };
+
+  const handleContatoButton = () => {
+    navigate("/contato");
+  };
 
   return (
     <>
@@ -43,10 +48,10 @@ const handleContatoButton = () => {
 
         <div className={styles.rightSection}>
           <nav className={styles.navButtons}>
-            <a href="#home" className={styles.navButton} onClick={handleHomeButton}>Início</a>
-            <a href="#produtos" className={styles.navButton} onClick={handleProdutosButton}>Produtos</a>
-            <a href="#sobre" className={styles.navButton} onClick={handleSobreButton}>Sobre</a>
-            <a href="#contato" className={styles.navButton} onClick={handleContatoButton}>Contato</a>
+            <button type="button" className={styles.navButton} onClick={handleHomeButton}>Início</button>
+            <button type="button" className={styles.navButton} onClick={handleProdutosButton}>Produtos</button>
+            <button type="button" className={styles.navButton} onClick={handleSobreButton}>Sobre</button>
+            <button type="button" className={styles.navButton} onClick={handleContatoButton}>Contato</button>
           </nav>
         </div>
       </header>
