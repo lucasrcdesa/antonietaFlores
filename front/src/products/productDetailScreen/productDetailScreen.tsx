@@ -1,83 +1,93 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import styles from "./productDetailScreen.module.css";
 import HomeHeader from "../../home/homeHeader/homeHeader";
-
-// Dados mock para exemplo
-const mockProducts = [
-  {
-    id: 1,
-    name: "Buquê Romântico",
-    description: "Rosas vermelhas com folhagens delicadas",
-    fullDescription: "Um lindo buquê composto por rosas vermelhas frescas, combinadas com folhagens delicadas e acabamento especial. Perfeito para expressar amor e carinho em momentos especiais como aniversários, datas comemorativas ou simplesmente para demonstrar afeto.",
-    price: 89.90,
-    category: "Buquês",
-    image: "https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=600",
-    includes: ["12 rosas vermelhas", "Folhagens decorativas", "Laço de cetim", "Embalagem especial"],
-  },
-  {
-    id: 2,
-    name: "Arranjo Primavera",
-    description: "Mix de flores coloridas da estação",
-    fullDescription: "Arranjo vibrante com as mais belas flores da estação, trazendo cores e alegria para qualquer ambiente. Cada arranjo é único, montado com carinho e atenção aos detalhes.",
-    price: 129.90,
-    category: "Arranjos",
-    image: "https://images.unsplash.com/photo-1561181286-d3fee7d55364?w=600",
-    includes: ["Flores variadas da estação", "Vaso decorativo", "Cartão personalizado"],
-  },
-  {
-    id: 3,
-    name: "Cesta de Girassóis",
-    description: "Girassóis frescos em cesta rústica",
-    fullDescription: "Linda cesta rústica repleta de girassóis frescos, perfeita para alegrar o dia de quem você ama. Os girassóis simbolizam felicidade, vitalidade e energia positiva.",
-    price: 159.90,
-    category: "Cestas",
-    image: "https://images.unsplash.com/photo-1551731409-43eb3e517a1a?w=600",
-    includes: ["6 girassóis frescos", "Cesta de vime", "Palha decorativa", "Laço especial"],
-  },
-  {
-    id: 4,
-    name: "Mimo Especial",
-    description: "Pequeno arranjo para presentear",
-    fullDescription: "Um mimo delicado e encantador, perfeito para presentear em qualquer ocasião. Compacto e cheio de charme, ideal para demonstrar carinho de forma simples e elegante.",
-    price: 59.90,
-    category: "Mimos",
-    image: "https://images.unsplash.com/photo-1567696911980-2eed69a46042?w=600",
-    includes: ["Flores mistas", "Mini vaso", "Embalagem decorativa"],
-  },
-  {
-    id: 5,
-    name: "Buquê de Noiva",
-    description: "Elegante buquê para casamentos",
-    fullDescription: "Buquê elegante e sofisticado, especialmente criado para o dia mais importante da sua vida. Trabalhamos com flores nobres e acabamento impecável para tornar seu momento ainda mais especial.",
-    price: 249.90,
-    category: "Noivas",
-    image: "https://images.unsplash.com/photo-1522057306606-8d84dfe6b612?w=600",
-    includes: ["Flores nobres selecionadas", "Cabo decorado", "Fita de cetim", "Caixa protetora"],
-  },
-  {
-    id: 6,
-    name: "Arranjo Tropical",
-    description: "Flores tropicais exóticas",
-    fullDescription: "Arranjo exuberante com flores tropicais que trazem um toque de natureza e exotismo para qualquer ambiente. Cores vibrantes e formas únicas que encantam.",
-    price: 189.90,
-    category: "Arranjos",
-    image: "https://images.unsplash.com/photo-1508610048659-a06b669e3321?w=600",
-    includes: ["Helicônias", "Strelitzias", "Folhagens tropicais", "Vaso moderno"],
-  },
-];
+import type { ProductProps } from "../../interfaces/productProps";
+import ProductImage from "../../components/productImage/productImage";
 
 const ProductDetailScreen = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  
-  const product = mockProducts.find((p) => p.id === Number(id));
+  const location = useLocation();
+  const routeState = location.state as { product?: ProductProps } | null;
+  const productId = Number(id);
+  const initialProduct = routeState?.product?.id === productId ? routeState.product : null;
+
+  const [product, setProduct] = useState<ProductProps | null>(initialProduct);
+  const [loading, setLoading] = useState(!initialProduct);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!productId || Number.isNaN(productId)) {
+      setProduct(null);
+      setLoading(false);
+      setError("Produto inválido.");
+      return;
+    }
+
+    if (initialProduct) {
+      setProduct(initialProduct);
+      setLoading(false);
+      setError(null);
+      return;
+    }
+
+    const fetchProduct = async () => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const token = localStorage.getItem("token");
+        const response = await fetch(`/api/produtos/${productId}`, {
+          headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+        });
+
+        if (response.ok) {
+          const data: ProductProps = await response.json();
+          setProduct(data.ativo ? data : null);
+          if (!data.ativo) {
+            setError("Este produto não está disponível no momento.");
+          }
+          return;
+        }
+
+        if (response.status === 404) {
+          setProduct(null);
+          return;
+        }
+
+        setError("Não foi possível carregar o produto.");
+      } catch (fetchError) {
+        console.error("Erro ao carregar detalhes do produto:", fetchError);
+        setError("Não foi possível carregar o produto.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProduct();
+  }, [initialProduct, productId]);
+
+  if (loading) {
+    return (
+      <div className={styles.container}>
+        <HomeHeader />
+        <main className={styles.mainContent}>
+          <div className={styles.feedbackState}>
+            <h2>Carregando produto...</h2>
+            <p>Buscando os detalhes do item selecionado.</p>
+          </div>
+        </main>
+      </div>
+    );
+  }
 
   if (!product) {
     return (
       <div className={styles.container}>
         <HomeHeader />
         <div className={styles.notFound}>
-          <h2>Produto não encontrado</h2>
+          <h2>{error ?? "Produto não encontrado"}</h2>
           <button onClick={() => navigate("/produtos")} className={styles.backBtn}>
             Voltar para produtos
           </button>
@@ -87,8 +97,8 @@ const ProductDetailScreen = () => {
   }
 
   const handleWhatsApp = () => {
-    const message = `Olá! Tenho interesse no produto: ${product.name} - R$ ${product.price.toFixed(2).replace(".", ",")}`;
-    const phone = "5511999999999"; // Número de exemplo
+    const message = `Olá! Tenho interesse no produto: ${product.nome} - R$ ${product.preco.toFixed(2).replace(".", ",")}`;
+    const phone = "5511999999999";
     window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, "_blank");
   };
 
@@ -103,26 +113,31 @@ const ProductDetailScreen = () => {
 
         <div className={styles.productDetail}>
           <div className={styles.imageSection}>
-            <img src={product.image} alt={product.name} className={styles.productImage} />
-            <span className={styles.categoryBadge}>{product.category}</span>
+            <ProductImage
+              imageUrl={product.imagemUrl}
+              alt={product.nome}
+              className={styles.productImage}
+            />
+            <span className={styles.categoryBadge}>{product.categoria}</span>
           </div>
 
           <div className={styles.infoSection}>
-            <h1 className={styles.productName}>{product.name}</h1>
-            <p className={styles.productDescription}>{product.fullDescription}</p>
+            <h1 className={styles.productName}>{product.nome}</h1>
+            <p className={styles.productDescription}>{product.descricao}</p>
 
             <div className={styles.includesSection}>
-              <h3>O que está incluso:</h3>
+              <h3>Detalhes do produto</h3>
               <ul className={styles.includesList}>
-                {product.includes?.map((item, index) => (
-                  <li key={index}>✓ {item}</li>
-                ))}
+                <li>Categoria: {product.categoria}</li>
+                <li>SKU: {product.sku}</li>
+                <li>Estoque disponível: {product.quantidadeEstoque} unidades</li>
+                <li>Status: {product.ativo ? "Disponível" : "Indisponível"}</li>
               </ul>
             </div>
 
             <div className={styles.priceSection}>
               <span className={styles.price}>
-                R$ {product.price.toFixed(2).replace(".", ",")}
+                R$ {product.preco.toFixed(2).replace(".", ",")}
               </span>
             </div>
 

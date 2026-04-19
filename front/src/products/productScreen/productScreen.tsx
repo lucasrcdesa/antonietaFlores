@@ -53,8 +53,8 @@ const ProductScreen = () => {
     }
   };
 
-  const handleProductClick = (id: number) => {
-    navigate(`/produtos/${id}`);
+  const handleProductClick = (product: ProductProps) => {
+    navigate(`/produtos/${product.id}`, { state: { product } });
   };
 
   useEffect(() => {
@@ -105,7 +105,7 @@ const ProductScreen = () => {
               <div
                 key={product.id}
                 className={styles.productCard}
-                onClick={() => handleProductClick(product.id!)}
+                onClick={() => handleProductClick(product)}
               >
                 <div className={styles.productImage}>
                   <ProductImage

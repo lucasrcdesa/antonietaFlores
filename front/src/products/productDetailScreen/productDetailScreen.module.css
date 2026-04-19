@@ -18,6 +18,25 @@
   box-sizing: border-box;
 }
 
+.feedbackState {
+  width: 100%;
+  max-width: 1200px;
+  background: #f7f2ed;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.feedbackState h2 {
+  margin: 0 0 0.75rem;
+  color: #6e5a4e;
+}
+
+.feedbackState p {
+  margin: 0;
+  color: #8f7f75;
+}
+
 .backLink {
   background: none;
   border: none;
@@ -51,9 +70,9 @@
 
 .productImage {
   width: 100%;
-  height: auto;
+  min-height: 320px;
   border-radius: 16px;
-  object-fit: cover;
+  overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
