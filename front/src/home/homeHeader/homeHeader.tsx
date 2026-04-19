@@ -6,6 +6,19 @@ import MenuBar from "../menuBar/menuBar";
 const HomeHeader = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const handleHomeButton = () => {
+   navigation.navigate('/');
+  }
+const handleProdutosButton = () => {
+   navigation.navigate('/produtos');
+  }
+const handleSobreButton = () => {
+   navigation.navigate('/sobre');
+  }
+const handleContatoButton = () => {
+   navigation.navigate('/contato');
+  }
+
   return (
     <>
       <MenuBar isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
@@ -30,10 +43,10 @@ const HomeHeader = () => {
 
         <div className={styles.rightSection}>
           <nav className={styles.navButtons}>
-            <a href="#home" className={styles.navButton}>Início</a>
-            <a href="#produtos" className={styles.navButton}>Produtos</a>
-            <a href="#sobre" className={styles.navButton}>Sobre</a>
-            <a href="#contato" className={styles.navButton}>Contato</a>
+            <a href="#home" className={styles.navButton} onClick={handleHomeButton}>Início</a>
+            <a href="#produtos" className={styles.navButton} onClick={handleProdutosButton}>Produtos</a>
+            <a href="#sobre" className={styles.navButton} onClick={handleSobreButton}>Sobre</a>
+            <a href="#contato" className={styles.navButton} onClick={handleContatoButton}>Contato</a>
           </nav>
         </div>
       </header>

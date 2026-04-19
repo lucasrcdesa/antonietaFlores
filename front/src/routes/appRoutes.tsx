@@ -4,6 +4,8 @@ import ProductScreen from "../products/productScreen/productScreen";
 import ProductDetailScreen from "../products/productDetailScreen/productDetailScreen";
 import LoginScreen from "../login/loginScreen";
 import ManagementScreen from "../management/managementScreen";
+import SobreScreen from "../sobre/sobreScreen";
+import ContactScreen from "../contato/contactScreen";
 
 const AppRoutes = () => {
   return (
@@ -14,6 +16,8 @@ const AppRoutes = () => {
         <Route path="/produtos/:id" element={<ProductDetailScreen />} />
         <Route path="/login" element={<LoginScreen />} />
         <Route path="/management" element={<ManagementScreen />} />
+        <Route path="/contatos" element={<ContactScreen />} />
+        <Route path="/sobre" element={<SobreScreen />} />
       </Routes>
     </BrowserRouter>
   );
