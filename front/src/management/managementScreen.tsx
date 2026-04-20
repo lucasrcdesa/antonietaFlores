@@ -20,6 +20,8 @@ const ManagementScreen = () => {
     const [produtos, setProdutos] = useState<Produto[]>([]);
     const [loading, setLoading] = useState(true);
     const [showModal, setShowModal] = useState(false);
+    const [sortField, setSortField] = useState<keyof Produto | null>(null);
+    const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
     const [editingProduto, setEditingProduto] = useState<Produto | null>(null);
     const [formData, setFormData] = useState<Produto>({
         sku: '',
@@ -140,6 +142,31 @@ const ManagementScreen = () => {
         });
     };
 
+    const handleSort = (field: keyof Produto) => {
+        if (sortField === field) {
+            setSortDirection(prev => prev === 'asc' ? 'desc' : 'asc');
+        } else {
+            setSortField(field);
+            setSortDirection('asc');
+        }
+    };
+
+    const sortedProdutos = sortField
+        ? [...produtos].sort((a, b) => {
+            const aVal = a[sortField];
+            const bVal = b[sortField];
+            if (aVal === undefined || aVal === null) return 1;
+            if (bVal === undefined || bVal === null) return -1;
+            const cmp = aVal < bVal ? -1 : aVal > bVal ? 1 : 0;
+            return sortDirection === 'asc' ? cmp : -cmp;
+        })
+        : produtos;
+
+    const sortIcon = (field: keyof Produto) => {
+        if (sortField !== field) return <span className={styles.sortIndicator}>↕</span>;
+        return <span className={styles.sortIndicator}>{sortDirection === 'asc' ? '↑' : '↓'}</span>;
+    };
+
     const openModal = () => {
         setEditingProduto(null);
         resetForm();
@@ -193,18 +220,18 @@ const ManagementScreen = () => {
                     <table>
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>SKU</th>
-                                <th>Nome</th>
-                                <th>Categoria</th>
-                                <th>Preço</th>
-                                <th>Estoque</th>
-                                <th>Status</th>
+                                <th className={styles.thSortable} onClick={() => handleSort('id')}>ID {sortIcon('id')}</th>
+                                <th className={styles.thSortable} onClick={() => handleSort('sku')}>SKU {sortIcon('sku')}</th>
+                                <th className={styles.thSortable} onClick={() => handleSort('nome')}>Nome {sortIcon('nome')}</th>
+                                <th className={styles.thSortable} onClick={() => handleSort('categoria')}>Categoria {sortIcon('categoria')}</th>
+                                <th className={styles.thSortable} onClick={() => handleSort('preco')}>Preço {sortIcon('preco')}</th>
+                                <th className={styles.thSortable} onClick={() => handleSort('quantidadeEstoque')}>Estoque {sortIcon('quantidadeEstoque')}</th>
+                                <th className={styles.thSortable} onClick={() => handleSort('ativo')}>Status {sortIcon('ativo')}</th>
                                 <th>Ações</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {produtos.map(produto => (
+                            {sortedProdutos.map(produto => (
                                 <tr key={produto.id}>
                                     <td>{produto.id}</td>
                                     <td>{produto.sku}</td>
