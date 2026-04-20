@@ -59,7 +59,7 @@ public class SecurityFilter extends OncePerRequestFilter {
         }
 
         // Libera endpoint de teste do WhatsApp
-        if (path.equals("/whatsapp/test") && method.equals("POST")) {
+        if (path.startsWith("/whatsapp/") && method.equals("POST")) {
             return true;
         }
 

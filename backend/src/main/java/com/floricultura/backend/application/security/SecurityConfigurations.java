@@ -50,7 +50,7 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.POST, "/webhook/whatsapp").permitAll()
 
                         // 🔓 WHATSAPP TESTE (temporário)
-                        .requestMatchers(HttpMethod.POST, "/whatsapp/test").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/whatsapp/**").permitAll()
 
                         // 🔓 CORS (preflight)
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
