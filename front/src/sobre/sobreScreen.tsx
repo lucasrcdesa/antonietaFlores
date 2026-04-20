@@ -1,6 +1,6 @@
 import HomeHeader from "../home/homeHeader/homeHeader";
 import styles from "./sobreScreen.module.css";
-import nosImage from "../../src/assets";
+import nosImage from "../../src/assets/capa2.jpeg";
 
 const SobreScreen = () => {
   return (
