@@ -87,6 +87,11 @@ public class WhatsAppClientService {
                 Map<String, Object> change = asMap(changeObject);
                 Map<String, Object> value = asMap(change.get("value"));
                 Object messagesObject = value.get("messages");
+                Object statusesObject = value.get("statuses");
+
+                if (statusesObject instanceof List<?> statuses && !statuses.isEmpty()) {
+                    logStatuses(statuses);
+                }
 
                 if (!(messagesObject instanceof List<?> messages) || messages.isEmpty()) {
                     continue;
@@ -164,5 +169,32 @@ public class WhatsAppClientService {
                 siteUrl,
                 catalogUrl
         );
+    }
+
+    private void logStatuses(List<?> statuses) {
+        for (Object statusObject : statuses) {
+            Map<String, Object> statusNode = asMap(statusObject);
+            String messageId = asString(statusNode.get("id"));
+            String recipientId = asString(statusNode.get("recipient_id"));
+            String status = asString(statusNode.get("status"));
+
+            List<?> errors = asList(statusNode.get("errors"));
+            if (!errors.isEmpty()) {
+                log.warn("WhatsApp delivery status: id={} recipient={} status={} errors={}",
+                        messageId,
+                        recipientId,
+                        status,
+                        errors);
+            } else {
+                log.info("WhatsApp delivery status: id={} recipient={} status={}",
+                        messageId,
+                        recipientId,
+                        status);
+            }
+        }
+    }
+
+    private List<?> asList(Object value) {
+        return value instanceof List<?> listValue ? listValue : List.of();
     }
 }
