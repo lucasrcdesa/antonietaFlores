@@ -38,6 +38,11 @@ const ManagementScreen = () => {
     const loadProdutos = useCallback(async () => {
         try {
             const token = localStorage.getItem('token');
+            if (!token) {
+                navigate('/login');
+                return;
+            }
+
             const response = await fetch('/api/produtos', {
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -70,6 +75,10 @@ const ManagementScreen = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         const token = localStorage.getItem('token');
+        if (!token) {
+            navigate('/login');
+            return;
+        }
 
         try {
             const url = editingProduto
@@ -92,6 +101,12 @@ const ManagementScreen = () => {
                 setEditingProduto(null);
                 resetForm();
                 loadProdutos();
+                return;
+            }
+
+            if (response.status === 401 || response.status === 403) {
+                localStorage.removeItem('token');
+                navigate('/login');
             }
         } catch (error) {
             console.error('Erro ao salvar produto:', error);
@@ -108,6 +123,11 @@ const ManagementScreen = () => {
         if (!confirm('Tem certeza que deseja excluir este produto?')) return;
 
         const token = localStorage.getItem('token');
+        if (!token) {
+            navigate('/login');
+            return;
+        }
+
         try {
             const response = await fetch(`/api/produtos/${id}`, {
                 method: 'DELETE',
@@ -118,6 +138,12 @@ const ManagementScreen = () => {
 
             if (response.ok) {
                 loadProdutos();
+                return;
+            }
+
+            if (response.status === 401 || response.status === 403) {
+                localStorage.removeItem('token');
+                navigate('/login');
             }
         } catch (error) {
             console.error('Erro ao excluir produto:', error);
