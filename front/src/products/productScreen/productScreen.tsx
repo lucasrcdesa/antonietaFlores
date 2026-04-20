@@ -1,9 +1,13 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState, useCallback } from "react";
 import styles from "./productScreen.module.css";
 import HomeHeader from "../../home/homeHeader/homeHeader";
 import type { ProductProps } from "../../interfaces/productProps";
 import ProductImage from "../../components/productImage/productImage";
+
+interface ProductRouteState {
+  fromHome?: boolean;
+}
 
 const ProductScreen = () => {
   const [products, setProducts] = useState<ProductProps[]>([]);
@@ -12,6 +16,28 @@ const ProductScreen = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("Todos");
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const location = useLocation();
+  const routeState = location.state as ProductRouteState | null;
+  const [showEntryTransition, setShowEntryTransition] = useState(Boolean(routeState?.fromHome));
+
+  const preloadProductImages = useCallback(async (items: ProductProps[]) => {
+    const urls = items
+      .map((item) => item.imagemUrl)
+      .filter((url): url is string => Boolean(url))
+      .slice(0, 8);
+
+    await Promise.all(
+      urls.map(
+        (url) =>
+          new Promise<void>((resolve) => {
+            const img = new Image();
+            img.onload = () => resolve();
+            img.onerror = () => resolve();
+            img.src = url;
+          })
+      )
+    );
+  }, []);
 
   const fetchProducts = useCallback(async () => {
     try {
@@ -32,6 +58,8 @@ const ProductScreen = () => {
         // Extrair categorias únicas e ordenar alfabeticamente
         const uniqueCategories = [...new Set(activeProducts.map(product => product.categoria))].sort();
         setCategories(uniqueCategories);
+
+        await preloadProductImages(activeProducts);
       } else if (response.status === 401) {
         // Token expirado, redirecionar para login
         navigate('/login');
@@ -41,7 +69,7 @@ const ProductScreen = () => {
     } finally {
       setLoading(false);
     }
-  }, [navigate]);
+  }, [navigate, preloadProductImages]);
 
   const handleCategoryFilter = (category: string) => {
     setSelectedCategory(category);
@@ -60,6 +88,20 @@ const ProductScreen = () => {
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
+
+  useEffect(() => {
+    if (!showEntryTransition) {
+      return;
+    }
+
+    const transitionTimer = window.setTimeout(() => {
+      setShowEntryTransition(false);
+    }, 700);
+
+    return () => window.clearTimeout(transitionTimer);
+  }, [showEntryTransition]);
+
+  const isTransitioning = loading || showEntryTransition;
 
   return (
     <div className={styles.container}>
@@ -92,9 +134,18 @@ const ProductScreen = () => {
         </section>
 
         <section className={styles.productsGrid}>
-          {loading ? (
-            <div className={styles.loading}>
-              <p>Carregando produtos...</p>
+          {isTransitioning ? (
+            <div className={styles.transitionState}>
+              <p>Preparando nossa vitrine para voce...</p>
+              <div className={styles.skeletonGrid}>
+                {Array.from({ length: 6 }).map((_, index) => (
+                  <div key={`skeleton-${index}`} className={styles.skeletonCard}>
+                    <div className={styles.skeletonImage}></div>
+                    <div className={styles.skeletonText}></div>
+                    <div className={styles.skeletonTextShort}></div>
+                  </div>
+                ))}
+              </div>
             </div>
           ) : filteredProducts.length === 0 ? (
             <div className={styles.emptyState}>

@@ -1,5 +1,5 @@
 import { BookIcon, FlowerIcon, HeartIcon, HouseIcon, PhoneIcon } from "@phosphor-icons/react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./menuBar.module.css";
 
 interface MenuBarProps {
@@ -9,10 +9,11 @@ interface MenuBarProps {
 
 const MenuBar = ({ isOpen, onClose }: MenuBarProps) => {
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const handleNavigation = (path: string) => {
+  const handleNavigation = (path: string, options?: { fromHome?: boolean }) => {
     onClose();
-    navigate(path);
+    navigate(path, { state: options });
   };
 
   return (
@@ -32,7 +33,10 @@ const MenuBar = ({ isOpen, onClose }: MenuBarProps) => {
             <span className={styles.menuIcon}><HouseIcon/></span>
             Início
           </button>
-          <button className={styles.menuItem} onClick={() => handleNavigation("/produtos")}>
+          <button
+            className={styles.menuItem}
+            onClick={() => handleNavigation("/produtos", { fromHome: location.pathname === "/" })}
+          >
             <span className={styles.menuIcon}><FlowerIcon/></span>
             Produtos
           </button>

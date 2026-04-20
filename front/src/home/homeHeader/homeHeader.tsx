@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./HomeHeader.module.css";
 import logo from "../../assets/logo_transparente.png";
 import MenuBar from "../menuBar/menuBar";
@@ -7,13 +7,14 @@ import MenuBar from "../menuBar/menuBar";
 const HomeHeader = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleHomeButton = () => {
     navigate("/");
   };
 
   const handleProdutosButton = () => {
-    navigate("/produtos");
+    navigate("/produtos", { state: { fromHome: location.pathname === "/" } });
   };
 
   const handleSobreButton = () => {
