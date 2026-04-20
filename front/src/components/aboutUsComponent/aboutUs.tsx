@@ -1,5 +1,6 @@
 import styles from "./aboutUs.module.css";
-import nos from "../../assets/nos.jpeg";
+import eventosArranjo from "../../assets/eventosArranjo.jpeg";
+
 const AboutUs = () => {
     return (
         <div className={styles.aboutUsContainer}>
@@ -9,7 +10,7 @@ const AboutUs = () => {
             <p>Com uma equipe de profissionais experientes e apaixonados pelo que fazem, estamos comprometidos em entregar resultados excepcionais e construir relacionamentos duradouros com nossos clientes.</p>
             </div>
             <div className={styles.sectionImage}>
-                <img src={nos} alt="Sobre Nós" className={styles.image} />
+                <img src={eventosArranjo} alt="Sobre Nós" className={styles.image} />
             </div>
             
         </div>
