@@ -1,5 +1,7 @@
 package com.floricultura.backend.api.produtos.whatsApp;
 
+import com.floricultura.backend.application.whatsApp.WhatsAppClientService;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,8 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/webhook/whatsapp")
 public class WhatsAppWebhookController {
 
+    private final WhatsAppClientService whatsAppClientService;
+
     @Value("${whatsapp.verify-token}")
     private String VERIFY_TOKEN;
+
+    public WhatsAppWebhookController(WhatsAppClientService whatsAppClientService) {
+        this.whatsAppClientService = whatsAppClientService;
+    }
 
     @GetMapping
     public ResponseEntity<String> verify(
@@ -29,10 +37,8 @@ public class WhatsAppWebhookController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> receive(@RequestBody String payload) {
-
-        System.out.println("📩 WhatsApp webhook recebido:");
-        System.out.println(payload);
+    public ResponseEntity<Void> receive(@RequestBody Map<String, Object> payload) {
+        whatsAppClientService.processWebhook(payload);
 
         return ResponseEntity.ok().build();
     }

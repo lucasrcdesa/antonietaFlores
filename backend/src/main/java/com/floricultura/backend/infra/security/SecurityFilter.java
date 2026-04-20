@@ -53,6 +53,16 @@ public class SecurityFilter extends OncePerRequestFilter {
             return true;
         }
 
+        // Libera webhook do WhatsApp
+        if (path.equals("/webhook/whatsapp")) {
+            return true;
+        }
+
+        // Libera endpoint de teste do WhatsApp
+        if (path.equals("/whatsapp/test") && method.equals("POST")) {
+            return true;
+        }
+
         System.out.println("🔒 Filtro JWT aplicado para: " + method + " " + path);
         return false;
     }
