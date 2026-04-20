@@ -2,52 +2,112 @@
   width: 100%;
   max-width: 100%;
   margin: 0;
-  padding: 2rem;
+  padding: 2.5rem 1.25rem 3rem;
   background-color: #E8D8C8;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  font-family: sans-serif;
+  font-family: 'Segoe UI', sans-serif;
   border-radius: 0;
   box-shadow: none;
 }
 
 .contactContainer h1 {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   color: #6E5A4E;
-  font-size: 2rem;
-  font-weight: 600;
+  font-size: clamp(2rem, 4vw, 2.5rem);
+  font-weight: 700;
 }
 
 .contactContainer p {
-  margin: 0.75rem 0;
+  margin: 0.4rem 0 1.5rem;
   color: #8F7F75;
-  font-size: 1rem;
+  font-size: 1.05rem;
   line-height: 1.6;
   text-align: center;
+  max-width: 760px;
 }
 
-.whatsApp {
-  gap: 0.75rem;
+.emailLink {
+  color: #6E5A4E;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-decoration: none;
+  margin: 0.25rem 0 1.6rem;
+  transition: color 0.2s ease;
+}
+
+.emailLink:hover {
+  color: #7A8E7A;
+}
+
+.contactRow {
+  gap: 0.85rem;
   display: flex;
-  flex-direction: row;
   align-items: center;
-  font-size: larger;
-  color: #25D366;
-  margin: 1rem 0;
-  font-weight: 500;
+  justify-content: center;
+  margin: 0.6rem 0;
 }
 
-.contactContainer a {
-  margin: 0.5rem;
+.icon {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+.whatsappIcon {
+  color: #25D366;
+}
+
+.instagramIcon {
+  color: #C13584;
+}
+
+.rowText {
+  margin: 0;
   color: #6E5A4E;
   text-decoration: none;
-  font-weight: 500;
-  transition: color 0.3s ease;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.2;
+  transition: color 0.2s ease;
 }
 
-.contactContainer a:hover {
-  color: #A78F7E;
+.rowText:hover {
+  color: #7A8E7A;
+}
+
+@media (max-width: 768px) {
+  .emailLink {
+    font-size: 1.1rem;
+  }
+
+  .rowText {
+    font-size: 1rem;
+  }
+
+  .icon {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+@media (max-width: 520px) {
+  .contactContainer {
+    padding: 2rem 1rem 2.4rem;
+  }
+
+  .contactContainer p {
+    font-size: 0.8rem;
+  }
+
+  .emailLink {
+    font-size: 0.9rem;
+  }
+
+  .rowText {
+    font-size: 0.7rem;
+  }
 }
 

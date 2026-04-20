@@ -1,5 +1,6 @@
 import HomeHeader from "../home/homeHeader/homeHeader";
 import styles from "./sobreScreen.module.css";
+import nosImage from "../../src/assets";
 
 const SobreScreen = () => {
   return (
@@ -8,23 +9,32 @@ const SobreScreen = () => {
 
       <main className={styles.contentWrapper}>
         <section className={styles.sectionCard}>
-          <h1 className={styles.title}>Sobre a Antonieta</h1>
+          <h1 className={styles.title}>Sobre nós</h1>
 
-          <p className={styles.text}>
-            A Antonieta é uma floricultura dedicada a oferecer as mais belas flores e arranjos para todas as ocasiões. Fundada em 2020, nossa missão é trazer alegria e beleza para a vida de nossos clientes através de nossas criações florais únicas e personalizadas.
-          </p>
-          <p className={styles.text}>
-            Na Antonieta, acreditamos que cada flor tem uma história para contar e um significado especial. Por isso, selecionamos cuidadosamente cada flor que utilizamos em nossos arranjos, garantindo qualidade e frescor em cada produto que entregamos.
-          </p>
-          <p className={styles.text}>
-            Além de nossos arranjos personalizados, também oferecemos uma variedade de buquês prontos para presentear ou decorar seu espaço. Seja para um aniversário, casamento, ou simplesmente para alegrar o dia de alguém, temos a opção perfeita para você.
-          </p>
-          <p className={styles.text}>
-            Nosso compromisso é proporcionar uma experiência de compra excepcional, desde o momento em que você escolhe seu arranjo até a entrega em sua porta. Estamos sempre prontos para ajudar e garantir que você encontre a flor perfeita para cada ocasião.
-          </p>
-          <p className={styles.text}>
-            Obrigado por escolher a Antonieta Flores. Estamos ansiosos para fazer parte dos seus momentos especiais com nossas flores encantadoras!
-          </p>
+          <div className={styles.cardContent}>
+            <div className={styles.imageSection}>
+              <img src={nosImage} alt="Equipe Antonieta Flores" className={styles.aboutImage} />
+            </div>
+
+            <div className={styles.textSection}>
+              <p className={styles.text}>
+                Somos uma empresa familiar que realiza o sonho de trabalhar com produções florais — um sonho que nasceu ainda na infância, quando nossa matriarca, Antonieta, nos ensinou a admirar a delicadeza e o cuidado com flores e plantas. Foi com ela que aprendemos a transformar simples folhagens e flores em belos arranjos, criando composições que vão do estilo mais simples ao mais sofisticado, sempre com personalidade.
+              </p>
+              <p className={styles.text}>
+                Hoje, a empresa Antonieta Flores leva seu nome como forma de homenagem e inspiração. Com carinho e dedicação, nossa missão é criar produtos de alta qualidade que atendam às necessidades do mercado e superem as expectativas dos nossos clientes, oferecendo flores lindas, frescas e diferenciadas para cada ocasião.
+              </p>
+              <p className={styles.text}>
+                Contamos com uma equipe de profissionais experientes e apaixonados pelo que fazem, comprometidos em entregar resultados excepcionais e em construir relacionamentos duradouros com nossos clientes.
+              </p>
+
+              <div className={styles.signature}>
+                <p className={styles.nameRole}>
+                  <strong>Ana Paula Rodrigues</strong>
+                </p>
+                <p className={styles.signatureTitle}>Designer Floral</p>
+              </div>
+            </div>
+          </div>
         </section>
       </main>
     </div>

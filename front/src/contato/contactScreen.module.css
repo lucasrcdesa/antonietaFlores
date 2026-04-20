@@ -5,7 +5,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-family: 'Segoe UI', 'Dancing Script', cursive, sans-serif;
+  font-family: 'Segoe UI', sans-serif;
 }
 
 .contentWrapper {
@@ -18,70 +18,115 @@
 
 .sectionCard {
   width: 100%;
-  max-width: 900px;
+  max-width: 1100px;
   background: #fff;
-  border-radius: 18px;
-  box-shadow: 0 2px 16px rgba(168, 50, 110, 0.07);
-  padding: 2rem 1.5rem;
+  border-radius: 22px;
+  box-shadow: 0 8px 28px rgba(110, 90, 78, 0.15);
+  padding: 2.5rem;
+  border: 1px solid rgba(122, 142, 122, 0.15);
 }
 
 .title {
-  color: #a8326e;
-  font-size: clamp(1.8rem, 3.2vw, 2.4rem);
-  margin: 0 0 0.75rem;
-  font-family: 'Dancing Script', cursive, sans-serif;
+  color: #6E5A4E;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  margin: 0 0 0.8rem;
+  font-family: 'Segoe UI', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
 }
 
 .description {
   color: #6e5a4e;
   font-size: 1.05rem;
-  line-height: 1.6;
-  margin-bottom: 1.5rem;
+  line-height: 1.75;
+  margin-bottom: 2.2rem;
+  font-family: 'Segoe UI', sans-serif;
 }
 
 .contactGrid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 .contactItem {
-  background: #fff8f2;
-  border: 1px solid rgba(110, 90, 78, 0.15);
-  border-radius: 14px;
-  padding: 1rem;
+  background: linear-gradient(135deg, #f7f4f1 0%, #faf8f6 100%);
+  border: 1.5px solid rgba(122, 142, 122, 0.2);
+  border-radius: 16px;
+  padding: 1.8rem;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.contactItem:hover {
+  transform: translateY(-4px);
+  border-color: rgba(122, 142, 122, 0.4);
+  box-shadow: 0 8px 20px rgba(110, 90, 78, 0.12);
 }
 
 .contactItem h2 {
-  margin: 0 0 0.35rem;
-  color: #a8326e;
-  font-size: 1.1rem;
+  margin: 0 0 0.8rem;
+  color: #7A8E7A;
+  font-size: 1.2rem;
+  font-weight: 700;
+  font-family: 'Segoe UI', sans-serif;
+  letter-spacing: 0.3px;
 }
 
 .contactItem p {
   margin: 0;
   color: #6e5a4e;
-  line-height: 1.5;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  font-family: 'Segoe UI', sans-serif;
+  font-weight: 500;
 }
 
 @media (max-width: 900px) {
+  .sectionCard {
+    padding: 2rem;
+  }
+
   .contactGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.2rem;
   }
 }
 
 @media (max-width: 640px) {
   .contentWrapper {
-    padding: 1rem 0.75rem 2rem;
+    padding: 1.5rem 0.75rem 2.5rem;
   }
 
   .sectionCard {
-    padding: 1.2rem 1rem;
-    border-radius: 14px;
+    padding: 1.5rem;
+    border-radius: 16px;
+  }
+
+  .title {
+    font-size: 1.6rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .description {
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
   }
 
   .contactGrid {
     grid-template-columns: 1fr;
-    gap: 0.75rem;
+    gap: 1rem;
+  }
+
+  .contactItem {
+    padding: 1.4rem;
+  }
+
+  .contactItem h2 {
+    font-size: 1.05rem;
+  }
+
+  .contactItem p {
+    font-size: 0.95rem;
   }
 }

@@ -6,17 +6,28 @@ const Contact: React.FC = () => {
     <div className={styles.contactContainer}>
       <h1>Contato</h1>
       <p>Entre em contato conosco para mais informações sobre nossos produtos e serviços.</p>
-      <h2>email@antonieta.com.br</h2>
-      <div className={styles.whatsApp}>
-        <WhatsappLogoIcon size={32} color="#25D366" weight="bold"  />
-        <h3 >(61) 99976-7896</h3>
+      <a href="mailto:email@antonieta.com.br" className={styles.emailLink}>
+        email@antonieta.com.br
+      </a>
+
+      <div className={styles.contactRow}>
+        <WhatsappLogoIcon className={`${styles.icon} ${styles.whatsappIcon}`} weight="regular" />
+        <a href="https://wa.me/5561999767896" target="_blank" rel="noopener noreferrer" className={styles.rowText}>
+          (61) 99976-7896
+        </a>
       </div>
-      <div className={styles.whatsApp}>
-        <InstagramLogoIcon size={32} color="#E1306C" weight="bold"  />
-        <a href="https://www.instagram.com/antonietaflores_?igsh=bGZjdm14emgzOWQ4" target="_blank" rel="noopener noreferrer">(@antonietaflores)</a>
+
+      <div className={styles.contactRow}>
+        <InstagramLogoIcon className={`${styles.icon} ${styles.instagramIcon}`} weight="regular" />
+        <a href="https://www.instagram.com/antonietaflores_?igsh=bGZjdm14emgzOWQ4" target="_blank" rel="noopener noreferrer" className={styles.rowText}>
+          @antonietaflores
+        </a>
       </div>
-      
-      
+      <div className={styles.contactRow}>
+        <a href="https://wa.me/5561999767896" target="_blank" rel="noopener noreferrer" className={styles.rowText}>
+          Site criado por Lucas Rodrigues - (61) 99662-9077
+        </a>
+      </div>
     </div>
   );
 };
