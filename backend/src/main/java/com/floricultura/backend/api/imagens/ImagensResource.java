@@ -14,7 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpServletRequest;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -30,7 +35,62 @@ public class ImagensResource {
         this.imageLocation = imageLocation;
     }
 
-    @GetMapping("/**")
+    @GetMapping("/categorias")
+    public ResponseEntity<Map<String, Object>> listarCategorias() {
+        try {
+            Resource assetsResource = resourceLoader.getResource(imageLocation);
+            File assetsDir = assetsResource.getFile();
+
+            if (!assetsDir.exists() || !assetsDir.isDirectory()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            Map<String, Object> result = new HashMap<>();
+            List<String> categorias = Arrays.stream(assetsDir.listFiles(File::isDirectory))
+                    .map(File::getName)
+                    .sorted()
+                    .toList();
+
+            result.put("categorias", categorias);
+            return ResponseEntity.ok(result);
+        } catch (IOException e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @GetMapping("/categorias/{categoria}")
+    public ResponseEntity<Map<String, Object>> listarImagensPorCategoria(@PathVariable String categoria) {
+        try {
+            Resource assetsResource = resourceLoader.getResource(imageLocation);
+            File assetsDir = assetsResource.getFile();
+            File categoriaDir = new File(assetsDir, categoria);
+
+            if (!categoriaDir.exists() || !categoriaDir.isDirectory()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            Map<String, Object> result = new HashMap<>();
+            List<String> imagens = Arrays.stream(categoriaDir.listFiles(File::isFile))
+                    .filter(f -> isImageFile(f))
+                    .map(File::getName)
+                    .sorted()
+                    .toList();
+
+            result.put("categoria", categoria);
+            result.put("imagens", imagens);
+            return ResponseEntity.ok(result);
+        } catch (IOException e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    private boolean isImageFile(File file) {
+        String name = file.getName().toLowerCase();
+        return name.endsWith(".jpg") || name.endsWith(".jpeg") || 
+               name.endsWith(".png") || name.endsWith(".gif") || 
+               name.endsWith(".webp");
+    }
+
 public ResponseEntity<Resource> buscarImagem(HttpServletRequest request) throws IOException {
 
     String fullPath = request.getRequestURI();

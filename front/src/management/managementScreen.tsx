@@ -23,6 +23,11 @@ const ManagementScreen = () => {
     const [sortField, setSortField] = useState<keyof Produto | null>(null);
     const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
     const [editingProduto, setEditingProduto] = useState<Produto | null>(null);
+    const [showImagePicker, setShowImagePicker] = useState(false);
+    const [imageCategorias, setImageCategorias] = useState<string[]>([]);
+    const [selectedImageCategoria, setSelectedImageCategoria] = useState<string | null>(null);
+    const [imagensDisponiveis, setImagensDisponiveis] = useState<string[]>([]);
+    const [loadingImages, setLoadingImages] = useState(false);
     const [formData, setFormData] = useState<Produto>({
         sku: '',
         nome: '',
@@ -62,6 +67,56 @@ const ManagementScreen = () => {
             setLoading(false);
         }
     }, [navigate]);
+
+    const carregarCategorias = async () => {
+        try {
+            const response = await fetch('/api/imagens/categorias');
+            if (response.ok) {
+                const data = await response.json();
+                setImageCategorias(data.categorias || []);
+            }
+        } catch (error) {
+            console.error('Erro ao carregar categorias:', error);
+        }
+    };
+
+    const carregarImagensDaCategoria = async (categoria: string) => {
+        setLoadingImages(true);
+        try {
+            const response = await fetch(`/api/imagens/categorias/${categoria}`);
+            if (response.ok) {
+                const data = await response.json();
+                setImagensDisponiveis(data.imagens || []);
+            }
+        } catch (error) {
+            console.error('Erro ao carregar imagens:', error);
+        } finally {
+            setLoadingImages(false);
+        }
+    };
+
+    const abrirImagePicker = async () => {
+        setShowImagePicker(true);
+        if (imageCategorias.length === 0) {
+            await carregarCategorias();
+        }
+    };
+
+    const selecionarImagem = (nomeImagem: string) => {
+        if (selectedImageCategoria) {
+            const caminhoImagem = `/api/imagens/${selectedImageCategoria}/${nomeImagem}`;
+            setFormData({ ...formData, imagemUrl: caminhoImagem });
+            setShowImagePicker(false);
+            setSelectedImageCategoria(null);
+            setImagensDisponiveis([]);
+        }
+    };
+
+    const fecharImagePicker = () => {
+        setShowImagePicker(false);
+        setSelectedImageCategoria(null);
+        setImagensDisponiveis([]);
+    };
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -372,11 +427,28 @@ const ManagementScreen = () => {
 
                             <div className={styles.formGroup}>
                                 <label>URL da Imagem</label>
-                                <input
-                                    type="text"
-                                    value={formData.imagemUrl}
-                                    onChange={(e) => setFormData({...formData, imagemUrl: e.target.value})}
-                                />
+                                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                    <input
+                                        type="text"
+                                        value={formData.imagemUrl}
+                                        onChange={(e) => setFormData({...formData, imagemUrl: e.target.value})}
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={abrirImagePicker}
+                                        style={{
+                                            padding: '0.75rem 1.2rem',
+                                            background: '#7A8E7A',
+                                            color: '#fff',
+                                            border: 'none',
+                                            borderRadius: '6px',
+                                            cursor: 'pointer',
+                                            whiteSpace: 'nowrap'
+                                        }}
+                                    >
+                                        🔍 Procurar
+                                    </button>
+                                </div>
                             </div>
 
                             <div className={styles.modalActions}>
@@ -388,6 +460,127 @@ const ManagementScreen = () => {
                                 </button>
                             </div>
                         </form>
+                    </div>
+                </div>
+            )}
+
+            {showImagePicker && (
+                <div className={styles.modal}>
+                    <div className={styles.modalContent} style={{ maxWidth: '900px' }}>
+                        <h2>Selecionar Imagem</h2>
+
+                        {!selectedImageCategoria ? (
+                            <div>
+                                <p>Selecione uma categoria:</p>
+                                <div style={{
+                                    display: 'grid',
+                                    gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))',
+                                    gap: '1rem'
+                                }}>
+                                    {imageCategorias.map((cat) => (
+                                        <button
+                                            key={cat}
+                                            onClick={() => {
+                                                setSelectedImageCategoria(cat);
+                                                carregarImagensDaCategoria(cat);
+                                            }}
+                                            style={{
+                                                padding: '1rem',
+                                                background: '#F7F2ED',
+                                                border: '2px solid #7A8E7A',
+                                                borderRadius: '8px',
+                                                cursor: 'pointer',
+                                                fontSize: '1rem',
+                                                fontWeight: '600',
+                                                color: '#6E5A4E',
+                                                transition: 'all 0.2s'
+                                            }}
+                                        >
+                                            {cat}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        ) : (
+                            <div>
+                                <button
+                                    onClick={() => {
+                                        setSelectedImageCategoria(null);
+                                        setImagensDisponiveis([]);
+                                    }}
+                                    style={{
+                                        marginBottom: '1rem',
+                                        padding: '0.5rem 1rem',
+                                        background: '#A78F7E',
+                                        color: '#fff',
+                                        border: 'none',
+                                        borderRadius: '6px',
+                                        cursor: 'pointer'
+                                    }}
+                                >
+                                    ← Voltar às categorias
+                                </button>
+
+                                {loadingImages ? (
+                                    <p>Carregando imagens...</p>
+                                ) : (
+                                    <div style={{
+                                        display: 'grid',
+                                        gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))',
+                                        gap: '1rem'
+                                    }}>
+                                        {imagensDisponiveis.length === 0 ? (
+                                            <p>Nenhuma imagem encontrada nesta categoria.</p>
+                                        ) : (
+                                            imagensDisponiveis.map((img) => (
+                                                <div
+                                                    key={img}
+                                                    onClick={() => selecionarImagem(img)}
+                                                    style={{
+                                                        cursor: 'pointer',
+                                                        border: '2px solid #ddd',
+                                                        borderRadius: '8px',
+                                                        overflow: 'hidden',
+                                                        transition: 'transform 0.2s',
+                                                        textAlign: 'center'
+                                                    }}
+                                                    onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
+                                                    onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+                                                >
+                                                    <img
+                                                        src={`/api/imagens/${selectedImageCategoria}/${img}`}
+                                                        alt={img}
+                                                        style={{
+                                                            width: '100%',
+                                                            height: '120px',
+                                                            objectFit: 'cover'
+                                                        }}
+                                                    />
+                                                    <p style={{
+                                                        margin: '0.5rem 0',
+                                                        fontSize: '0.8rem',
+                                                        color: '#6E5A4E',
+                                                        padding: '0.3rem'
+                                                    }}>
+                                                        {img}
+                                                    </p>
+                                                </div>
+                                            ))
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
+                        <div className={styles.modalActions}>
+                            <button
+                                type="button"
+                                onClick={fecharImagePicker}
+                                className={styles.cancelBtn}
+                            >
+                                Fechar
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}
