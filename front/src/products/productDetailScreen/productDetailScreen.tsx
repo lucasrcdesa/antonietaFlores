@@ -97,8 +97,9 @@ const ProductDetailScreen = () => {
   }
 
   const handleWhatsApp = () => {
-    const message = `Olá! Tenho interesse no produto: ${product.nome} - R$ ${product.preco.toFixed(2).replace(".", ",")}`;
-    const phone = "5511999999999";
+    const productLink = `${window.location.origin}/produtos/${product.id}`;
+    const message = `Olá! Gostaria de fazer o pedido de um ${product.nome}.\n\nLink do produto: ${productLink}`;
+    const phone = "5561999767896";
     window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, "_blank");
   };
 
