@@ -5,6 +5,26 @@ import HomeHeader from "../../home/homeHeader/homeHeader";
 import type { ProductProps } from "../../interfaces/productProps";
 import ProductImage from "../../components/productImage/productImage";
 
+type CategoriaImagensResponse = {
+  categoria: string;
+  imagens: string[];
+};
+
+const extractRelativeImagePath = (imageUrl: string, categoria: string): string | null => {
+  const marker = `/api/imagens/${categoria}/`;
+  const markerIndex = imageUrl.indexOf(marker);
+  if (markerIndex < 0) {
+    return null;
+  }
+
+  return imageUrl.slice(markerIndex + marker.length);
+};
+
+const getImageGroupKey = (relativePath: string): string | null => {
+  const parts = relativePath.split("/").filter(Boolean);
+  return parts.length > 1 ? parts[0] : null;
+};
+
 const ProductDetailScreen = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -16,6 +36,8 @@ const ProductDetailScreen = () => {
   const [product, setProduct] = useState<ProductProps | null>(initialProduct);
   const [loading, setLoading] = useState(!initialProduct);
   const [error, setError] = useState<string | null>(null);
+  const [galleryImages, setGalleryImages] = useState<string[]>([]);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
     if (!productId || Number.isNaN(productId)) {
@@ -68,6 +90,84 @@ const ProductDetailScreen = () => {
     fetchProduct();
   }, [initialProduct, productId]);
 
+  useEffect(() => {
+    if (!product) {
+      setGalleryImages([]);
+      setCurrentImageIndex(0);
+      return;
+    }
+
+    const loadGallery = async () => {
+      const normalizedCategory = product.categoria.trim().toLowerCase();
+      const fallbackImages = product.imagemUrl ? [product.imagemUrl] : [];
+
+      if (!normalizedCategory) {
+        setGalleryImages(fallbackImages);
+        setCurrentImageIndex(0);
+        return;
+      }
+
+      try {
+        const response = await fetch(`/api/imagens/categorias/${normalizedCategory}`);
+        if (!response.ok) {
+          setGalleryImages(fallbackImages);
+          setCurrentImageIndex(0);
+          return;
+        }
+
+        const data: CategoriaImagensResponse = await response.json();
+        const normalizedImages = Array.isArray(data.imagens) ? data.imagens : [];
+        const categoryImageUrls = normalizedImages.map(
+          (img) => `/api/imagens/${normalizedCategory}/${img}`
+        );
+
+        const currentRelativePath = extractRelativeImagePath(product.imagemUrl, normalizedCategory);
+        const currentGroup = currentRelativePath ? getImageGroupKey(currentRelativePath) : null;
+
+        let relatedImages = categoryImageUrls;
+        if (currentGroup) {
+          const filteredByGroup = categoryImageUrls.filter((url) => {
+            const relative = extractRelativeImagePath(url, normalizedCategory);
+            if (!relative) {
+              return false;
+            }
+            return getImageGroupKey(relative) === currentGroup;
+          });
+
+          if (filteredByGroup.length > 0) {
+            relatedImages = filteredByGroup;
+          }
+        }
+
+        const deduped = Array.from(new Set([product.imagemUrl, ...relatedImages]));
+        setGalleryImages(deduped.length > 0 ? deduped : fallbackImages);
+        setCurrentImageIndex(0);
+      } catch (galleryError) {
+        console.error("Erro ao carregar galeria do produto:", galleryError);
+        setGalleryImages(fallbackImages);
+        setCurrentImageIndex(0);
+      }
+    };
+
+    loadGallery();
+  }, [product]);
+
+  const currentImage = galleryImages[currentImageIndex] ?? product?.imagemUrl ?? "";
+
+  const handleNextImage = () => {
+    if (galleryImages.length < 2) {
+      return;
+    }
+    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % galleryImages.length);
+  };
+
+  const handlePrevImage = () => {
+    if (galleryImages.length < 2) {
+      return;
+    }
+    setCurrentImageIndex((prevIndex) => (prevIndex - 1 + galleryImages.length) % galleryImages.length);
+  };
+
   if (loading) {
     return (
       <div className={styles.container}>
@@ -115,11 +215,49 @@ const ProductDetailScreen = () => {
         <div className={styles.productDetail}>
           <div className={styles.imageSection}>
             <ProductImage
-              imageUrl={product.imagemUrl}
+              imageUrl={currentImage}
               alt={product.nome}
               className={styles.productImage}
             />
+            {galleryImages.length > 1 && (
+              <>
+                <button
+                  type="button"
+                  onClick={handlePrevImage}
+                  className={`${styles.carouselArrow} ${styles.carouselArrowLeft}`}
+                  aria-label="Imagem anterior"
+                >
+                  ‹
+                </button>
+                <button
+                  type="button"
+                  onClick={handleNextImage}
+                  className={`${styles.carouselArrow} ${styles.carouselArrowRight}`}
+                  aria-label="Próxima imagem"
+                >
+                  ›
+                </button>
+              </>
+            )}
             <span className={styles.categoryBadge}>{product.categoria}</span>
+
+            {galleryImages.length > 1 && (
+              <div className={styles.thumbnailStrip}>
+                {galleryImages.map((img, index) => (
+                  <button
+                    key={`${img}-${index}`}
+                    type="button"
+                    onClick={() => setCurrentImageIndex(index)}
+                    className={`${styles.thumbnailBtn} ${
+                      index === currentImageIndex ? styles.thumbnailBtnActive : ""
+                    }`}
+                    aria-label={`Selecionar imagem ${index + 1}`}
+                  >
+                    <img src={img} alt={`${product.nome} ${index + 1}`} />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           <div className={styles.infoSection}>

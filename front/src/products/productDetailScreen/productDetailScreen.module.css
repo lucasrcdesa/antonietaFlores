@@ -66,6 +66,9 @@
   flex: 1;
   position: relative;
   max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
 }
 
 .productImage {
@@ -86,6 +89,72 @@
   border-radius: 20px;
   font-size: 0.9rem;
   font-weight: 500;
+}
+
+.carouselArrow {
+  position: absolute;
+  top: 38%;
+  transform: translateY(-50%);
+  width: 2.2rem;
+  height: 2.2rem;
+  border: none;
+  border-radius: 999px;
+  background: rgba(247, 242, 237, 0.9);
+  color: #6e5a4e;
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s, background 0.2s;
+  z-index: 2;
+}
+
+.carouselArrow:hover {
+  background: #f7f2ed;
+  transform: translateY(-50%) scale(1.05);
+}
+
+.carouselArrowLeft {
+  left: 0.75rem;
+}
+
+.carouselArrowRight {
+  right: 0.75rem;
+}
+
+.thumbnailStrip {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.2rem;
+}
+
+.thumbnailBtn {
+  width: 72px;
+  min-width: 72px;
+  height: 72px;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  background: #f7f2ed;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.thumbnailBtn:hover {
+  transform: translateY(-2px);
+  border-color: rgba(122, 142, 122, 0.6);
+}
+
+.thumbnailBtnActive {
+  border-color: #7a8e7a;
+}
+
+.thumbnailBtn img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .infoSection {
@@ -235,6 +304,18 @@
 
   .imageSection {
     max-width: 100%;
+  }
+
+  .carouselArrow {
+    width: 2rem;
+    height: 2rem;
+    font-size: 1.4rem;
+  }
+
+  .thumbnailBtn {
+    width: 64px;
+    min-width: 64px;
+    height: 64px;
   }
 
   .productName {
