@@ -9,6 +9,14 @@ interface ProductRouteState {
   fromHome?: boolean;
 }
 
+const formatProductPrice = (price: number): string => {
+  if (price <= 0) {
+    return "A consultar";
+  }
+
+  return `R$ ${price.toFixed(2).replace(".", ",")}`;
+};
+
 const ProductScreen = () => {
   const [products, setProducts] = useState<ProductProps[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<ProductProps[]>([]);
@@ -171,7 +179,7 @@ const ProductScreen = () => {
                   <p className={styles.productDescription}>{product.descricao}</p>
                   <div className={styles.productFooter}>
                     <span className={styles.productPrice}>
-                      R$ {product.preco.toFixed(2).replace(".", ",")}
+                      {formatProductPrice(product.preco)}
                     </span>
                     <button className={styles.viewBtn}>Ver mais</button>
                   </div>
