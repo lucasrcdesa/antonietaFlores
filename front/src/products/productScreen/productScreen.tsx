@@ -67,7 +67,8 @@ const ProductScreen = () => {
         const uniqueCategories = [...new Set(activeProducts.map(product => product.categoria))].sort();
         setCategories(uniqueCategories);
 
-        await preloadProductImages(activeProducts);
+        // Nao bloqueia a exibicao dos cards enquanto as imagens sao pré-carregadas.
+        void preloadProductImages(activeProducts);
       } else if (response.status === 401) {
         // Token expirado, redirecionar para login
         navigate('/login');
