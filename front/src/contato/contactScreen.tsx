@@ -21,12 +21,13 @@ const ContactScreen = () => {
 
             <article className={styles.contactItem}>
               <h2>Telefone</h2>
-              <p>(11) 99999-9999</p>
+              <p>(61) 99976-7896</p>
             </article>
 
             <article className={styles.contactItem}>
               <h2>Atendimento</h2>
-              <p>Segunda a Sábado, das 8h às 18h</p>
+              <p>Segunda a sexta, das 9h às 17h</p>
+              <p>Sábado, das 9h às 14h</p>
             </article>
           </div>
         </section>
