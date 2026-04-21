@@ -31,6 +31,7 @@ const slides = [
 
 const ImageTextCarousel = () => {
   const [current, setCurrent] = useState(0);
+  const [loadedSlides, setLoadedSlides] = useState<Record<number, boolean>>({});
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -41,12 +42,32 @@ const ImageTextCarousel = () => {
   }, []);
 
   const slide = slides[current];
+  const isCurrentSlideLoaded = Boolean(loadedSlides[current]);
+
+  const handleImageLoad = () => {
+    setLoadedSlides((prev) => {
+      if (prev[current]) {
+        return prev;
+      }
+      return { ...prev, [current]: true };
+    });
+  };
 
   return (
     <div className={styles.carouselWrapper}>
       <div className={styles.carouselContainer}>
         <div className={styles.slide}>
-          <img src={slide.image} alt={slide.title} className={styles.imgView} />
+          {!isCurrentSlideLoaded && (
+            <div className={styles.imageLoader} aria-label="Carregando banner">
+              <div className={styles.loaderSpinner}></div>
+            </div>
+          )}
+          <img
+            src={slide.image}
+            alt={slide.title}
+            className={`${styles.imgView} ${isCurrentSlideLoaded ? styles.imgVisible : styles.imgHidden}`}
+            onLoad={handleImageLoad}
+          />
         </div>
         <div className={styles.text}>
           <h2>{slide.title}</h2>

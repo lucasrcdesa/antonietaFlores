@@ -9,6 +9,8 @@ interface ProductRouteState {
   fromHome?: boolean;
 }
 
+const INITIAL_PRODUCTS_CHUNK = 6;
+
 const formatProductPrice = (price: number): string => {
   if (price <= 0) {
     return "A consultar";
@@ -22,6 +24,8 @@ const ProductScreen = () => {
   const [filteredProducts, setFilteredProducts] = useState<ProductProps[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("Todos");
+  const [visibleProducts, setVisibleProducts] = useState<ProductProps[]>([]);
+  const [loadingRemainingProducts, setLoadingRemainingProducts] = useState(false);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
@@ -99,6 +103,24 @@ const ProductScreen = () => {
   }, [fetchProducts]);
 
   useEffect(() => {
+    if (filteredProducts.length <= INITIAL_PRODUCTS_CHUNK) {
+      setVisibleProducts(filteredProducts);
+      setLoadingRemainingProducts(false);
+      return;
+    }
+
+    setVisibleProducts(filteredProducts.slice(0, INITIAL_PRODUCTS_CHUNK));
+    setLoadingRemainingProducts(true);
+
+    const progressiveRenderTimer = window.setTimeout(() => {
+      setVisibleProducts(filteredProducts);
+      setLoadingRemainingProducts(false);
+    }, 140);
+
+    return () => window.clearTimeout(progressiveRenderTimer);
+  }, [filteredProducts]);
+
+  useEffect(() => {
     if (!showEntryTransition) {
       return;
     }
@@ -161,7 +183,7 @@ const ProductScreen = () => {
               <p>Nenhum produto encontrado nesta categoria.</p>
             </div>
           ) : (
-            filteredProducts.map((product) => (
+            visibleProducts.map((product) => (
               <div
                 key={product.id}
                 className={styles.productCard}
@@ -189,6 +211,10 @@ const ProductScreen = () => {
             ))
           )}
         </section>
+
+        {!isTransitioning && loadingRemainingProducts && (
+          <p className={styles.loadingMore}>Carregando mais produtos...</p>
+        )}
       </main>
     </div>
   );
