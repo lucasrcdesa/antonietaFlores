@@ -90,10 +90,6 @@ const LoginScreen = () => {
                         {isLoading ? 'Entrando...' : 'Entrar'}
                     </button>
                 </form>
-
-                <p className={styles.registerLink}>
-                    Não tem conta? <a href="/register">Registrar-se</a>
-                </p>
             </div>
         </div>
     );
