@@ -427,7 +427,7 @@ const ManagementScreen = () => {
 
                             <div className={styles.formGroup}>
                                 <label>URL da Imagem</label>
-                                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                <div className={styles.imageUrlRow}>
                                     <input
                                         type="text"
                                         value={formData.imagemUrl}
@@ -436,19 +436,18 @@ const ManagementScreen = () => {
                                     <button
                                         type="button"
                                         onClick={abrirImagePicker}
-                                        style={{
-                                            padding: '0.75rem 1.2rem',
-                                            background: '#7A8E7A',
-                                            color: '#fff',
-                                            border: 'none',
-                                            borderRadius: '6px',
-                                            cursor: 'pointer',
-                                            whiteSpace: 'nowrap'
-                                        }}
+                                        className={styles.pickImageBtn}
                                     >
-                                        🔍 Procurar
+                                        🔍 Selecionar foto
                                     </button>
                                 </div>
+                                <p className={styles.imageHelperText}>Use o botao ao lado para escolher a imagem com preview.</p>
+
+                                {formData.imagemUrl && (
+                                    <div className={styles.currentImagePreview}>
+                                        <img src={formData.imagemUrl} alt="Preview da imagem selecionada" />
+                                    </div>
+                                )}
                             </div>
 
                             <div className={styles.modalActions}>

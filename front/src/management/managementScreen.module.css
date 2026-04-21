@@ -288,6 +288,58 @@
   min-height: 80px;
 }
 
+.imageUrlRow {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.imageUrlRow input {
+  min-width: 0;
+}
+
+.pickImageBtn {
+  padding: 0.72rem 1rem;
+  background: #7A8E7A;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  white-space: nowrap;
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: 'Segoe UI', sans-serif;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.pickImageBtn:hover {
+  background: #6a7d6a;
+  transform: translateY(-1px);
+}
+
+.imageHelperText {
+  margin: 0.55rem 0 0;
+  color: #7c6d63;
+  font-size: 0.82rem;
+}
+
+.currentImagePreview {
+  margin-top: 0.75rem;
+  border: 1px solid rgba(122, 142, 122, 0.25);
+  border-radius: 12px;
+  padding: 0.5rem;
+  background: #f7f2ed;
+}
+
+.currentImagePreview img {
+  width: 100%;
+  max-height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+  display: block;
+}
+
 .modalActions {
   display: flex;
   justify-content: flex-end;
@@ -366,6 +418,14 @@
 
   .formRow {
     grid-template-columns: 1fr;
+  }
+
+  .imageUrlRow {
+    grid-template-columns: 1fr;
+  }
+
+  .pickImageBtn {
+    width: 100%;
   }
 
   .productsTable {
