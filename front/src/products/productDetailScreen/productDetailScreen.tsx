@@ -307,8 +307,6 @@ const ProductDetailScreen = () => {
               <h3>Detalhes do produto</h3>
               <ul className={styles.includesList}>
                 <li>Categoria: {product.categoria}</li>
-                <li>SKU: {product.sku}</li>
-                <li>Estoque disponível: {product.quantidadeEstoque} unidades</li>
                 <li>Status: {product.ativo ? "Disponível" : "Indisponível"}</li>
               </ul>
             </div>
@@ -322,9 +320,6 @@ const ProductDetailScreen = () => {
             <div className={styles.actionsSection}>
               <button onClick={handleWhatsApp} className={styles.whatsappBtn}>
                 📱 Pedir pelo WhatsApp
-              </button>
-              <button className={styles.favoriteBtn}>
-                ♡ Adicionar aos favoritos
               </button>
             </div>
           </div>
