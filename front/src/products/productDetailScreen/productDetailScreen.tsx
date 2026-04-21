@@ -10,20 +10,48 @@ type CategoriaImagensResponse = {
   imagens: string[];
 };
 
-const extractRelativeImagePath = (imageUrl: string, categoria: string): string | null => {
-  const marker = `/api/imagens/${categoria}/`;
-  const markerIndex = imageUrl.indexOf(marker);
-  if (markerIndex < 0) {
+type ImagePathInfo = {
+  category: string;
+  relativePath: string;
+  directoryPath: string;
+};
+
+const extractImagePathInfo = (imageUrl: string): ImagePathInfo | null => {
+  const sanitizedUrl = imageUrl.split("?")[0];
+  const match = sanitizedUrl.match(/\/api\/imagens\/(.+)$/);
+  if (!match?.[1]) {
     return null;
   }
 
-  return imageUrl.slice(markerIndex + marker.length);
+  const decodedPath = decodeURIComponent(match[1]);
+  const pathParts = decodedPath.split("/").filter(Boolean);
+  if (pathParts.length < 2) {
+    return null;
+  }
+
+  const [category, ...remainingParts] = pathParts;
+  const relativePath = remainingParts.join("/");
+  const directoryPath = remainingParts.length > 1 ? remainingParts.slice(0, -1).join("/") : "";
+
+  return {
+    category,
+    relativePath,
+    directoryPath,
+  };
 };
 
-const getImageGroupKey = (relativePath: string): string | null => {
+const getDirectoryPath = (relativePath: string): string => {
   const parts = relativePath.split("/").filter(Boolean);
-  return parts.length > 1 ? parts[0] : null;
+  return parts.length > 1 ? parts.slice(0, -1).join("/") : "";
 };
+
+const slugifyCategory = (value: string): string =>
+  value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, "");
 
 const ProductDetailScreen = () => {
   const { id } = useParams();
@@ -98,48 +126,59 @@ const ProductDetailScreen = () => {
     }
 
     const loadGallery = async () => {
-      const normalizedCategory = product.categoria.trim().toLowerCase();
       const fallbackImages = product.imagemUrl ? [product.imagemUrl] : [];
+      const imageInfo = extractImagePathInfo(product.imagemUrl);
 
-      if (!normalizedCategory) {
+      if (!imageInfo) {
+        setGalleryImages(fallbackImages);
+        setCurrentImageIndex(0);
+        return;
+      }
+
+      const productCategory = product.categoria?.trim() ?? "";
+      const categoryCandidates = Array.from(
+        new Set(
+          [
+            imageInfo.category,
+            productCategory,
+            productCategory.toLowerCase(),
+            slugifyCategory(productCategory),
+          ].filter((value): value is string => Boolean(value))
+        )
+      );
+
+      if (categoryCandidates.length === 0) {
         setGalleryImages(fallbackImages);
         setCurrentImageIndex(0);
         return;
       }
 
       try {
-        const response = await fetch(`/api/imagens/categorias/${normalizedCategory}`);
-        if (!response.ok) {
-          setGalleryImages(fallbackImages);
-          setCurrentImageIndex(0);
-          return;
-        }
+        let galleryByPath: string[] = [];
 
-        const data: CategoriaImagensResponse = await response.json();
-        const normalizedImages = Array.isArray(data.imagens) ? data.imagens : [];
-        const categoryImageUrls = normalizedImages.map(
-          (img) => `/api/imagens/${normalizedCategory}/${img}`
-        );
+        for (const category of categoryCandidates) {
+          const response = await fetch(`/api/imagens/categorias/${encodeURIComponent(category)}`);
+          if (!response.ok) {
+            continue;
+          }
 
-        const currentRelativePath = extractRelativeImagePath(product.imagemUrl, normalizedCategory);
-        const currentGroup = currentRelativePath ? getImageGroupKey(currentRelativePath) : null;
+          const data: CategoriaImagensResponse = await response.json();
+          const images = Array.isArray(data.imagens) ? data.imagens : [];
+          if (images.length === 0) {
+            continue;
+          }
 
-        let relatedImages = categoryImageUrls;
-        if (currentGroup) {
-          const filteredByGroup = categoryImageUrls.filter((url) => {
-            const relative = extractRelativeImagePath(url, normalizedCategory);
-            if (!relative) {
-              return false;
-            }
-            return getImageGroupKey(relative) === currentGroup;
-          });
+          const sameDirectoryImages = images.filter(
+            (img) => getDirectoryPath(img) === imageInfo.directoryPath
+          );
 
-          if (filteredByGroup.length > 0) {
-            relatedImages = filteredByGroup;
+          if (sameDirectoryImages.length > 0) {
+            galleryByPath = sameDirectoryImages.map((img) => `/api/imagens/${category}/${img}`);
+            break;
           }
         }
 
-        const deduped = Array.from(new Set([product.imagemUrl, ...relatedImages]));
+        const deduped = Array.from(new Set([product.imagemUrl, ...galleryByPath]));
         setGalleryImages(deduped.length > 0 ? deduped : fallbackImages);
         setCurrentImageIndex(0);
       } catch (galleryError) {
