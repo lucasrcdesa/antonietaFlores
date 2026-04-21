@@ -170,6 +170,7 @@
 }
 
 .transitionState {
+  grid-column: 1 / -1;
   width: 100%;
   text-align: center;
 }
@@ -178,6 +179,20 @@
   color: #6E5A4E;
   font-size: 1rem;
   margin: 0 0 1.2rem;
+}
+
+.emptyState {
+  grid-column: 1 / -1;
+  width: 100%;
+  text-align: center;
+  padding: 2rem 1rem;
+  background: #F7F2ED;
+  border-radius: 14px;
+  color: #6E5A4E;
+}
+
+.emptyState p {
+  margin: 0;
 }
 
 .skeletonGrid {
