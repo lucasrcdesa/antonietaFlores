@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,54 +50,42 @@ public class ImagensResource {
 
     @GetMapping("/categorias")
     public ResponseEntity<Map<String, Object>> listarCategorias() {
+        Map<String, Object> result = new HashMap<>();
         try {
             Set<String> categorias = obterCategorias();
-
-            Map<String, Object> result = new HashMap<>();
             result.put("categorias", categorias.stream().toList());
             return ResponseEntity.ok(result);
-        } catch (IOException e) {
-            return ResponseEntity.internalServerError().build();
+        } catch (Exception e) {
+            System.out.println("Erro ao listar categorias de imagens: " + e.getMessage());
+            result.put("categorias", List.of());
+            return ResponseEntity.ok(result);
         }
     }
 
     @GetMapping("/categorias/{categoria}")
     public ResponseEntity<Map<String, Object>> listarImagensPorCategoria(@PathVariable String categoria) {
+        Map<String, Object> result = new HashMap<>();
         try {
-            if (!obterCategorias().contains(categoria)) {
-                return ResponseEntity.notFound().build();
-            }
-
-            Map<String, Object> result = new HashMap<>();
             List<String> imagens = obterImagensDaCategoria(categoria);
-
             result.put("categoria", categoria);
             result.put("imagens", imagens);
             return ResponseEntity.ok(result);
-        } catch (IOException e) {
-            return ResponseEntity.internalServerError().build();
+        } catch (Exception e) {
+            System.out.println("Erro ao listar imagens da categoria " + categoria + ": " + e.getMessage());
+            result.put("categoria", categoria);
+            result.put("imagens", List.of());
+            return ResponseEntity.ok(result);
         }
     }
 
     private Set<String> obterCategorias() throws IOException {
         if (imageLocation.startsWith("classpath:")) {
-            String pattern = "classpath*:/static/assets/**/*.*";
-            Resource[] resources = resourceResolver.getResources(pattern);
-
             Set<String> categorias = new TreeSet<>();
-            for (Resource resource : resources) {
-                if (!resource.exists()) {
-                    continue;
-                }
-                String relative = extrairRelativePath(resource, "/static/assets/");
-                if (relative == null || relative.isBlank()) {
-                    continue;
-                }
-                String[] parts = relative.split("/");
-                if (parts.length > 1 && isImageFile(parts[parts.length - 1])) {
-                    categorias.add(parts[0]);
-                }
-            }
+            categorias.addAll(extrairCategoriasPorPadrao("classpath*:/static/assets/**/*.jpg"));
+            categorias.addAll(extrairCategoriasPorPadrao("classpath*:/static/assets/**/*.jpeg"));
+            categorias.addAll(extrairCategoriasPorPadrao("classpath*:/static/assets/**/*.png"));
+            categorias.addAll(extrairCategoriasPorPadrao("classpath*:/static/assets/**/*.gif"));
+            categorias.addAll(extrairCategoriasPorPadrao("classpath*:/static/assets/**/*.webp"));
             return categorias;
         }
 
@@ -114,16 +104,13 @@ public class ImagensResource {
 
     private List<String> obterImagensDaCategoria(String categoria) throws IOException {
         if (imageLocation.startsWith("classpath:")) {
-            String pattern = "classpath*:/static/assets/" + categoria + "/**/*.*";
-            Resource[] resources = resourceResolver.getResources(pattern);
-
-            return Stream.of(resources)
-                    .filter(Resource::exists)
-                    .map(resource -> extrairRelativePath(resource, "/static/assets/" + categoria + "/"))
-                    .filter(path -> path != null && !path.isBlank())
-                    .filter(this::isImageFile)
-                    .sorted()
-                    .toList();
+            Set<String> imagens = new TreeSet<>();
+            imagens.addAll(extrairImagensPorPadrao(categoria, "classpath*:/static/assets/" + categoria + "/**/*.jpg"));
+            imagens.addAll(extrairImagensPorPadrao(categoria, "classpath*:/static/assets/" + categoria + "/**/*.jpeg"));
+            imagens.addAll(extrairImagensPorPadrao(categoria, "classpath*:/static/assets/" + categoria + "/**/*.png"));
+            imagens.addAll(extrairImagensPorPadrao(categoria, "classpath*:/static/assets/" + categoria + "/**/*.gif"));
+            imagens.addAll(extrairImagensPorPadrao(categoria, "classpath*:/static/assets/" + categoria + "/**/*.webp"));
+            return imagens.stream().toList();
         }
 
         Path categoriaPath = resolverAssetsPathFisico().resolve(categoria);
@@ -151,7 +138,7 @@ public class ImagensResource {
 
     private String extrairRelativePath(Resource resource, String marker) {
         try {
-            String url = resource.getURL().toString().replace("\\", "/");
+            String url = URLDecoder.decode(resource.getURL().toString(), StandardCharsets.UTF_8).replace("\\", "/");
             int idx = url.indexOf(marker);
             if (idx < 0) {
                 return null;
@@ -167,6 +154,44 @@ public class ImagensResource {
         return normalized.endsWith(".jpg") || normalized.endsWith(".jpeg") ||
                 normalized.endsWith(".png") || normalized.endsWith(".gif") ||
                 normalized.endsWith(".webp");
+    }
+
+    private Set<String> extrairCategoriasPorPadrao(String pattern) throws IOException {
+        Resource[] resources = resourceResolver.getResources(pattern);
+        Set<String> categorias = new TreeSet<>();
+        for (Resource resource : resources) {
+            if (!resource.exists()) {
+                continue;
+            }
+            String relative = extrairRelativePath(resource, "/static/assets/");
+            if (relative == null || relative.isBlank()) {
+                continue;
+            }
+            String[] parts = relative.split("/");
+            if (parts.length > 1 && isImageFile(parts[parts.length - 1])) {
+                categorias.add(parts[0]);
+            }
+        }
+        return categorias;
+    }
+
+    private Set<String> extrairImagensPorPadrao(String categoria, String pattern) throws IOException {
+        Resource[] resources = resourceResolver.getResources(pattern);
+        Set<String> imagens = new TreeSet<>();
+        String marker = "/static/assets/" + categoria + "/";
+        for (Resource resource : resources) {
+            if (!resource.exists()) {
+                continue;
+            }
+            String relative = extrairRelativePath(resource, marker);
+            if (relative == null || relative.isBlank()) {
+                continue;
+            }
+            if (isImageFile(relative)) {
+                imagens.add(relative);
+            }
+        }
+        return imagens;
     }
 
     @GetMapping("/**")
