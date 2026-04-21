@@ -45,13 +45,6 @@ public class SecurityConfigurations {
                         // 🔓 IMAGENS
                         .requestMatchers(HttpMethod.GET, "/api/imagens/**").permitAll()
 
-                        // 🔓 WHATSAPP WEBHOOK
-                        .requestMatchers(HttpMethod.GET, "/webhook/whatsapp").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/webhook/whatsapp").permitAll()
-
-                        // 🔓 WHATSAPP TESTE (temporário)
-                        .requestMatchers(HttpMethod.POST, "/whatsapp/**").permitAll()
-
                         // 🔓 CORS (preflight)
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 

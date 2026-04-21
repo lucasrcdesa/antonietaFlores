@@ -5,7 +5,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Segoe UI', 'Dancing Script', cursive, sans-serif;
+  font-family: 'Segoe UI', sans-serif;
   padding: 2rem;
 }
 
@@ -17,7 +17,7 @@
   width: 100%;
   max-width: 460px;
   text-align: center;
-  border: 2px solid rgba(168, 50, 110, 0.1);
+  border: 1.5px solid rgba(122, 142, 122, 0.25);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -27,12 +27,8 @@
 }
 
 .loginTitle {
-  font-size: 2.5rem;
-  background: linear-gradient(135deg, #a8326e 0%, #6E5A4E 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  font-family: 'Dancing Script', cursive, sans-serif;
+  font-size: 2rem;
+  color: #6E5A4E;
   margin-bottom: 0.5rem;
   font-weight: 700;
 }
@@ -56,9 +52,9 @@
 
 .inputLabel {
   display: block;
-  color: #a8326e;
+  color: #6E5A4E;
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: 600;
   margin-bottom: 0.5rem;
 }
 
@@ -76,8 +72,8 @@
 
 .inputField:focus {
   outline: none;
-  border-color: #a8326e;
-  box-shadow: 0 0 0 4px rgba(168, 50, 110, 0.12);
+  border-color: #7A8E7A;
+  box-shadow: 0 0 0 4px rgba(122, 142, 122, 0.15);
   transform: translateY(-2px);
 }
 
@@ -93,7 +89,7 @@
 }
 
 .loginBtn {
-  background: linear-gradient(135deg, #a8326e 0%, #6E5A4E 100%);
+  background: #7A8E7A;
   color: #fff;
   border: none;
   border-radius: 28px;
@@ -101,7 +97,7 @@
   font-size: 1.15rem;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 6px 20px rgba(168, 50, 110, 0.25);
+  box-shadow: 0 6px 20px rgba(122, 142, 122, 0.25);
   transition: all 0.3s ease;
   margin-top: 1.5rem;
   width: 100%;
@@ -109,9 +105,9 @@
 }
 
 .loginBtn:hover:not(:disabled) {
-  background: linear-gradient(135deg, #6E5A4E 0%, #a8326e 100%);
+  background: #6a7d6a;
   transform: translateY(-3px);
-  box-shadow: 0 8px 28px rgba(168, 50, 110, 0.35);
+  box-shadow: 0 8px 28px rgba(122, 142, 122, 0.35);
 }
 
 .loginBtn:disabled {
@@ -127,9 +123,9 @@
 }
 
 .registerLink a {
-  color: #a8326e;
+  color: #7A8E7A;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .registerLink a:hover {
