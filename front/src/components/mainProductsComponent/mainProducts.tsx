@@ -43,9 +43,13 @@ const cards = [
   },
 ];
 
+const handleNavigateProducts = () => {
+  navigation.navigate("/sobre");
+}
+
 const MainProducts = () => {
   return (
-    <div className={styles.mainProductsContainer}>
+    <div className={styles.mainProductsContainer} onClick={handleNavigateProducts}>
       <div className={styles.sectionTitle}>
         <h2>Nossos Produtos</h2>
       </div>
