@@ -32,6 +32,8 @@ const SobreScreen = () => {
                   <strong>Ana Paula Rodrigues</strong>
                 </p>
                 <p className={styles.signatureTitle}>Designer Floral</p>
+                <p className={styles.signatureTitle}>Especialista em buquês de noivas</p>
+
               </div>
             </div>
           </div>
