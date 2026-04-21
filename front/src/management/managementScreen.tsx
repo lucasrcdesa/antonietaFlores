@@ -28,6 +28,7 @@ const ManagementScreen = () => {
     const [selectedImageCategoria, setSelectedImageCategoria] = useState<string | null>(null);
     const [imagensDisponiveis, setImagensDisponiveis] = useState<string[]>([]);
     const [loadingImages, setLoadingImages] = useState(false);
+    const [imagePickerError, setImagePickerError] = useState<string | null>(null);
     const [formData, setFormData] = useState<Produto>({
         sku: '',
         nome: '',
@@ -70,26 +71,34 @@ const ManagementScreen = () => {
 
     const carregarCategorias = async () => {
         try {
+            setImagePickerError(null);
             const response = await fetch('/api/imagens/categorias');
             if (response.ok) {
                 const data = await response.json();
                 setImageCategorias(data.categorias || []);
+            } else {
+                setImagePickerError('Nao foi possivel carregar as categorias de imagem.');
             }
         } catch (error) {
             console.error('Erro ao carregar categorias:', error);
+            setImagePickerError('Nao foi possivel carregar as categorias de imagem.');
         }
     };
 
     const carregarImagensDaCategoria = async (categoria: string) => {
         setLoadingImages(true);
         try {
+            setImagePickerError(null);
             const response = await fetch(`/api/imagens/categorias/${categoria}`);
             if (response.ok) {
                 const data = await response.json();
                 setImagensDisponiveis(data.imagens || []);
+            } else {
+                setImagePickerError('Nao foi possivel carregar as imagens da categoria.');
             }
         } catch (error) {
             console.error('Erro ao carregar imagens:', error);
+            setImagePickerError('Nao foi possivel carregar as imagens da categoria.');
         } finally {
             setLoadingImages(false);
         }
@@ -116,6 +125,7 @@ const ManagementScreen = () => {
         setShowImagePicker(false);
         setSelectedImageCategoria(null);
         setImagensDisponiveis([]);
+        setImagePickerError(null);
     };
 
     useEffect(() => {
@@ -471,6 +481,8 @@ const ManagementScreen = () => {
                         {!selectedImageCategoria ? (
                             <div>
                                 <p>Selecione uma categoria:</p>
+                                {imagePickerError && <p>{imagePickerError}</p>}
+                                {!imagePickerError && imageCategorias.length === 0 && <p>Nenhuma categoria encontrada.</p>}
                                 <div style={{
                                     display: 'grid',
                                     gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))',
@@ -523,6 +535,8 @@ const ManagementScreen = () => {
                                 {loadingImages ? (
                                     <p>Carregando imagens...</p>
                                 ) : (
+                                    <>
+                                    {imagePickerError && <p>{imagePickerError}</p>}
                                     <div style={{
                                         display: 'grid',
                                         gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))',
@@ -567,6 +581,7 @@ const ManagementScreen = () => {
                                             ))
                                         )}
                                     </div>
+                                    </>
                                 )}
                             </div>
                         )}

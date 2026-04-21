@@ -3,6 +3,7 @@ package com.floricultura.backend.api.imagens;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.MediaTypeFactory;
@@ -14,44 +15,44 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static java.nio.file.Files.isDirectory;
+import static java.nio.file.Files.list;
+import static java.nio.file.Files.walk;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @RestController
 @RequestMapping("/api/imagens")
 public class ImagensResource {
 
     private final ResourceLoader resourceLoader;
+    private final PathMatchingResourcePatternResolver resourceResolver;
     private final String imageLocation;
 
     public ImagensResource(ResourceLoader resourceLoader,
                            @Value("${produto.images.location:classpath:/static/assets/}") String imageLocation) {
         this.resourceLoader = resourceLoader;
+        this.resourceResolver = new PathMatchingResourcePatternResolver(resourceLoader);
         this.imageLocation = imageLocation;
     }
 
     @GetMapping("/categorias")
     public ResponseEntity<Map<String, Object>> listarCategorias() {
         try {
-            Resource assetsResource = resourceLoader.getResource(imageLocation);
-            File assetsDir = assetsResource.getFile();
-
-            if (!assetsDir.exists() || !assetsDir.isDirectory()) {
-                return ResponseEntity.notFound().build();
-            }
+            Set<String> categorias = obterCategorias();
 
             Map<String, Object> result = new HashMap<>();
-            List<String> categorias = Arrays.stream(assetsDir.listFiles(File::isDirectory))
-                    .map(File::getName)
-                    .sorted()
-                    .toList();
-
-            result.put("categorias", categorias);
+            result.put("categorias", categorias.stream().toList());
             return ResponseEntity.ok(result);
         } catch (IOException e) {
             return ResponseEntity.internalServerError().build();
@@ -61,20 +62,12 @@ public class ImagensResource {
     @GetMapping("/categorias/{categoria}")
     public ResponseEntity<Map<String, Object>> listarImagensPorCategoria(@PathVariable String categoria) {
         try {
-            Resource assetsResource = resourceLoader.getResource(imageLocation);
-            File assetsDir = assetsResource.getFile();
-            File categoriaDir = new File(assetsDir, categoria);
-
-            if (!categoriaDir.exists() || !categoriaDir.isDirectory()) {
+            if (!obterCategorias().contains(categoria)) {
                 return ResponseEntity.notFound().build();
             }
 
             Map<String, Object> result = new HashMap<>();
-            List<String> imagens = Arrays.stream(categoriaDir.listFiles(File::isFile))
-                    .filter(f -> isImageFile(f))
-                    .map(File::getName)
-                    .sorted()
-                    .toList();
+            List<String> imagens = obterImagensDaCategoria(categoria);
 
             result.put("categoria", categoria);
             result.put("imagens", imagens);
@@ -84,13 +77,99 @@ public class ImagensResource {
         }
     }
 
-    private boolean isImageFile(File file) {
-        String name = file.getName().toLowerCase();
-        return name.endsWith(".jpg") || name.endsWith(".jpeg") || 
-               name.endsWith(".png") || name.endsWith(".gif") || 
-               name.endsWith(".webp");
+    private Set<String> obterCategorias() throws IOException {
+        if (imageLocation.startsWith("classpath:")) {
+            String pattern = "classpath*:/static/assets/**/*.*";
+            Resource[] resources = resourceResolver.getResources(pattern);
+
+            Set<String> categorias = new TreeSet<>();
+            for (Resource resource : resources) {
+                if (!resource.exists()) {
+                    continue;
+                }
+                String relative = extrairRelativePath(resource, "/static/assets/");
+                if (relative == null || relative.isBlank()) {
+                    continue;
+                }
+                String[] parts = relative.split("/");
+                if (parts.length > 1 && isImageFile(parts[parts.length - 1])) {
+                    categorias.add(parts[0]);
+                }
+            }
+            return categorias;
+        }
+
+        Path assetsPath = resolverAssetsPathFisico();
+        if (!isDirectory(assetsPath)) {
+            return Set.of();
+        }
+
+        try (Stream<Path> stream = list(assetsPath)) {
+            return stream
+                    .filter(java.nio.file.Files::isDirectory)
+                    .map(path -> path.getFileName().toString())
+                    .collect(Collectors.toCollection(TreeSet::new));
+        }
     }
 
+    private List<String> obterImagensDaCategoria(String categoria) throws IOException {
+        if (imageLocation.startsWith("classpath:")) {
+            String pattern = "classpath*:/static/assets/" + categoria + "/**/*.*";
+            Resource[] resources = resourceResolver.getResources(pattern);
+
+            return Stream.of(resources)
+                    .filter(Resource::exists)
+                    .map(resource -> extrairRelativePath(resource, "/static/assets/" + categoria + "/"))
+                    .filter(path -> path != null && !path.isBlank())
+                    .filter(this::isImageFile)
+                    .sorted()
+                    .toList();
+        }
+
+        Path categoriaPath = resolverAssetsPathFisico().resolve(categoria);
+        if (!isDirectory(categoriaPath)) {
+            return List.of();
+        }
+
+        try (Stream<Path> stream = walk(categoriaPath)) {
+            return stream
+                    .filter(java.nio.file.Files::isRegularFile)
+                    .map(path -> categoriaPath.relativize(path).toString().replace("\\", "/"))
+                    .filter(this::isImageFile)
+                    .sorted()
+                    .toList();
+        }
+    }
+
+    private Path resolverAssetsPathFisico() {
+        String normalized = imageLocation;
+        if (normalized.startsWith("file:")) {
+            normalized = normalized.substring("file:".length());
+        }
+        return Paths.get(normalized);
+    }
+
+    private String extrairRelativePath(Resource resource, String marker) {
+        try {
+            String url = resource.getURL().toString().replace("\\", "/");
+            int idx = url.indexOf(marker);
+            if (idx < 0) {
+                return null;
+            }
+            return url.substring(idx + marker.length());
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    private boolean isImageFile(String name) {
+        String normalized = name.toLowerCase();
+        return normalized.endsWith(".jpg") || normalized.endsWith(".jpeg") ||
+                normalized.endsWith(".png") || normalized.endsWith(".gif") ||
+                normalized.endsWith(".webp");
+    }
+
+    @GetMapping("/**")
 public ResponseEntity<Resource> buscarImagem(HttpServletRequest request) throws IOException {
 
     String fullPath = request.getRequestURI();
