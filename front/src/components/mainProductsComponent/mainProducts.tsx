@@ -44,7 +44,7 @@ const cards = [
 ];
 
 const handleNavigateProducts = () => {
-  navigation.navigate("/sobre");
+  navigation.navigate("/produtos");
 }
 
 const MainProducts = () => {
