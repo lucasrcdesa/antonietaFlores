@@ -4,7 +4,6 @@ import styles from './managementScreen.module.css';
 
 interface Produto {
     id?: number;
-    sku: string;
     nome: string;
     descricao: string;
     preco: number;
@@ -30,7 +29,6 @@ const ManagementScreen = () => {
     const [loadingImages, setLoadingImages] = useState(false);
     const [imagePickerError, setImagePickerError] = useState<string | null>(null);
     const [formData, setFormData] = useState<Produto>({
-        sku: '',
         nome: '',
         descricao: '',
         preco: 0,
@@ -222,7 +220,6 @@ const ManagementScreen = () => {
 
     const resetForm = () => {
         setFormData({
-            sku: '',
             nome: '',
             descricao: '',
             preco: 0,
@@ -312,7 +309,6 @@ const ManagementScreen = () => {
                         <thead>
                             <tr>
                                 <th className={styles.thSortable} onClick={() => handleSort('id')}>ID {sortIcon('id')}</th>
-                                <th className={styles.thSortable} onClick={() => handleSort('sku')}>SKU {sortIcon('sku')}</th>
                                 <th className={styles.thSortable} onClick={() => handleSort('nome')}>Nome {sortIcon('nome')}</th>
                                 <th className={styles.thSortable} onClick={() => handleSort('categoria')}>Categoria {sortIcon('categoria')}</th>
                                 <th className={styles.thSortable} onClick={() => handleSort('preco')}>Preço {sortIcon('preco')}</th>
@@ -325,7 +321,6 @@ const ManagementScreen = () => {
                             {sortedProdutos.map(produto => (
                                 <tr key={produto.id}>
                                     <td>{produto.id}</td>
-                                    <td>{produto.sku}</td>
                                     <td>{produto.nome}</td>
                                     <td>{produto.categoria}</td>
                                     <td>R$ {produto.preco.toFixed(2)}</td>
@@ -361,25 +356,14 @@ const ManagementScreen = () => {
                     <div className={styles.modalContent}>
                         <h2>{editingProduto ? 'Editar Produto' : 'Novo Produto'}</h2>
                         <form onSubmit={handleSubmit}>
-                            <div className={styles.formRow}>
-                                <div className={styles.formGroup}>
-                                    <label>SKU</label>
-                                    <input
-                                        type="text"
-                                        value={formData.sku}
-                                        onChange={(e) => setFormData({...formData, sku: e.target.value})}
-                                        required
-                                    />
-                                </div>
-                                <div className={styles.formGroup}>
-                                    <label>Nome</label>
-                                    <input
-                                        type="text"
-                                        value={formData.nome}
-                                        onChange={(e) => setFormData({...formData, nome: e.target.value})}
-                                        required
-                                    />
-                                </div>
+                            <div className={styles.formGroup}>
+                                <label>Nome</label>
+                                <input
+                                    type="text"
+                                    value={formData.nome}
+                                    onChange={(e) => setFormData({...formData, nome: e.target.value})}
+                                    required
+                                />
                             </div>
 
                             <div className={styles.formGroup}>
