@@ -313,7 +313,7 @@ const ProductDetailScreen = () => {
 
             <div className={styles.priceSection}>
               <span className={styles.price}>
-                R$ {product.preco.toFixed(2).replace(".", ",")}
+                {product.preco > 0 ? `R$ ${product.preco.toFixed(2).replace(".", ",")}` : "A consultar"}
               </span>
             </div>
 
