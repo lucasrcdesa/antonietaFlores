@@ -51,7 +51,6 @@ const HomeHeader = () => {
           <nav className={styles.navButtons}>
             <button type="button" className={styles.navButton} onClick={handleHomeButton}>Início</button>
             <button type="button" className={styles.navButton} onClick={handleProdutosButton}>Produtos</button>
-            <button type="button" className={styles.navButton} onClick={handleSobreButton}>Sobre</button>
             <button type="button" className={styles.navButton} onClick={handleContatoButton}>Contato</button>
           </nav>
         </div>

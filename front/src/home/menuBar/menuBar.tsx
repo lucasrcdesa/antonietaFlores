@@ -40,10 +40,6 @@ const MenuBar = ({ isOpen, onClose }: MenuBarProps) => {
             <span className={styles.menuIcon}><FlowerIcon/></span>
             Produtos
           </button>
-          <button type="button" className={styles.menuItem} onClick={() => handleNavigation("/sobre")}>
-            <span className={styles.menuIcon}><BookIcon/></span>
-            Sobre
-          </button>
           <button type="button" className={styles.menuItem} onClick={() => handleNavigation("/contato")}>
             <span className={styles.menuIcon}><PhoneIcon/></span>
             Contato
