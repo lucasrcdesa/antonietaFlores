@@ -235,7 +235,7 @@
 }
 
 .skeletonImage {
-  height: 220px;
+  height: 350px;
   border-radius: 12px;
 }
 
@@ -299,11 +299,11 @@
   }
 
   .productImage {
-    height: 180px;
+    height: 300px;
   }
 
   .skeletonImage {
-    height: 180px;
+    height: 300px;
   }
 }
 
