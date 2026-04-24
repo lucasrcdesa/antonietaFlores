@@ -18,14 +18,14 @@
 
 .heroSection {
   text-align: center;
-  padding: 2rem 1rem;
+  padding: 1rem 1rem 0.5rem;
   max-width: 600px;
 }
 
 .title {
   font-size: 2.5rem;
   color: #6E5A4E;
-  margin: 0 0 1rem 0;
+  margin: 0 0 0.5rem 0;
   font-weight: 600;
 }
 
