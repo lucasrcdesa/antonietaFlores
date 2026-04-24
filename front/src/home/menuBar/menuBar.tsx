@@ -1,4 +1,4 @@
-import { BookIcon, FlowerIcon, HeartIcon, HouseIcon, PhoneIcon } from "@phosphor-icons/react";
+import { FlowerIcon, HeartIcon, HouseIcon, PhoneIcon } from "@phosphor-icons/react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./menuBar.module.css";
 

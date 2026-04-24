@@ -17,10 +17,6 @@ const HomeHeader = () => {
     navigate("/produtos", { state: { fromHome: location.pathname === "/" } });
   };
 
-  const handleSobreButton = () => {
-    navigate("/sobre");
-  };
-
   const handleContatoButton = () => {
     navigate("/contato");
   };
