@@ -2,13 +2,11 @@ import styles from "./aboutUs.module.css";
 import eventosArranjo from "../../assets/eventosArranjo.jpeg";
 
 
-const handleNavigateSobre = () => {
-    navigation.navigate("/sobre");
-}
+
 
 const AboutUs = () => {
     return (
-        <div className={styles.aboutUsContainer }onClick={handleNavigateSobre}>
+        <div className={styles.aboutUsContainer }>
             <div className={styles.sectionTitle}>
                <h1>Sobre Nós</h1>
                 <p className={styles.text}>
