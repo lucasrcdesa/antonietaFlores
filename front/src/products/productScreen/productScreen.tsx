@@ -67,17 +67,8 @@ const ProductScreen = () => {
         setProducts(activeProducts);
         setFilteredProducts(activeProducts);
 
-        // Extrair categorias únicas que ainda existem na lista de categorias salvas
-        const categoriasExtras: string[] = (() => {
-          try {
-            return JSON.parse(localStorage.getItem('categorias_extras') || '[]');
-          } catch {
-            return [];
-          }
-        })();
-        const uniqueCategories = [...new Set(activeProducts.map(product => product.categoria))]
-          .filter(cat => categoriasExtras.includes(cat))
-          .sort();
+        // Extrair categorias únicas e ordenar alfabeticamente
+        const uniqueCategories = [...new Set(activeProducts.map(product => product.categoria))].sort();
         setCategories(uniqueCategories);
 
         void preloadProductImages(activeProducts);

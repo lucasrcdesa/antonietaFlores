@@ -251,7 +251,7 @@ const ManagementScreen = () => {
         }
     };
 
-    const produtosFiltrados = produtos.filter(p => categoriasExtras.includes(p.categoria));
+    const produtosFiltrados = produtos;
 
     const sortedProdutos = sortField
         ? [...produtosFiltrados].sort((a, b) => {
