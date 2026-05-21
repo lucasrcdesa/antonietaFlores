@@ -42,6 +42,8 @@ public class Produto {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
+
+    public Long getId() {
         return id;
     }
 
