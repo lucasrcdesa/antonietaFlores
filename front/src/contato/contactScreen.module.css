@@ -5,7 +5,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 .contentWrapper {
@@ -30,7 +30,7 @@
   color: #6E5A4E;
   font-size: clamp(1.8rem, 4vw, 2.8rem);
   margin: 0 0 0.8rem;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-weight: 700;
   letter-spacing: 0.2px;
 }
@@ -40,7 +40,7 @@
   font-size: 1.05rem;
   line-height: 1.75;
   margin-bottom: 2.2rem;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 .contactGrid {
@@ -69,7 +69,7 @@
   color: #7A8E7A;
   font-size: 1.2rem;
   font-weight: 700;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Inter', sans-serif;
   letter-spacing: 0.3px;
 }
 
@@ -78,7 +78,7 @@
   color: #6e5a4e;
   font-size: 1.05rem;
   line-height: 1.6;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-weight: 500;
 }
 
@@ -110,6 +110,7 @@
 
   .description {
     font-size: 0.95rem;
+    line-height: 1.8;
     margin-bottom: 1.5rem;
   }
 
@@ -128,5 +129,27 @@
 
   .contactItem p {
     font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 520px) {
+  .title {
+    font-size: 1.45rem;
+  }
+
+  .description {
+    font-size: 0.92rem;
+  }
+
+  .contactItem {
+    padding: 1.2rem;
+  }
+
+  .contactItem h2 {
+    font-size: 1rem;
+  }
+
+  .contactItem p {
+    font-size: 0.9rem;
   }
 }

@@ -5,7 +5,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Inter', sans-serif;
   padding: 2rem;
 }
 
@@ -38,6 +38,7 @@
   color: #6E5A4E;
   margin-bottom: 2.5rem;
   font-weight: 400;
+  line-height: 1.6;
 }
 
 .loginForm {
@@ -64,7 +65,7 @@
   border: 2px solid #CBB2A1;
   border-radius: 16px;
   font-size: 1rem;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Inter', sans-serif;
   transition: all 0.3s ease;
   box-sizing: border-box;
   background: #FFFFFF;
@@ -130,4 +131,34 @@
 
 .registerLink a:hover {
   text-decoration: underline;
+}
+
+@media (max-width: 520px) {
+  .loginContainer {
+    padding: 1rem;
+  }
+
+  .loginCard {
+    padding: 2rem 1.25rem;
+    border-radius: 18px;
+  }
+
+  .loginTitle {
+    font-size: 1.65rem;
+  }
+
+  .loginSubtitle {
+    font-size: 0.98rem;
+    margin-bottom: 2rem;
+  }
+
+  .inputLabel,
+  .inputField,
+  .loginBtn {
+    font-size: 0.98rem;
+  }
+
+  .loginBtn {
+    padding: 1rem 1.5rem;
+  }
 }

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styles from './loginScreen.module.css';
 
 const LoginScreen = () => {
@@ -8,6 +9,8 @@ const LoginScreen = () => {
     });
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
+    const navigate = useNavigate();
+    const location = useLocation();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({
@@ -33,8 +36,8 @@ const LoginScreen = () => {
             if (response.ok) {
                 const data = await response.json();
                 localStorage.setItem('token', data.token);
-                // Redirecionar para a tela de gerenciamento
-                window.location.href = '/management';
+                const destination = (location.state as { from?: { pathname?: string } } | null)?.from?.pathname ?? '/management';
+                navigate(destination, { replace: true });
             } else {
                 setError('Credenciais inválidas');
             }

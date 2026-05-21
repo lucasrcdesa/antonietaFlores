@@ -2,7 +2,7 @@
   width: 100%;
   min-height: 100vh;
   background-color: #E8D8C8;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 .header {
@@ -17,7 +17,7 @@
 
 .title {
   color: #6E5A4E;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 1.8rem;
   margin: 0;
   font-weight: 700;
@@ -38,7 +38,7 @@
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Inter', sans-serif;
   box-shadow: 0 2px 10px rgba(122, 142, 122, 0.25);
   transition: all 0.2s ease;
   letter-spacing: 0.3px;
@@ -93,7 +93,7 @@
   font-size: 0.95rem;
   margin-bottom: 0.5rem;
   font-weight: 500;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Inter', sans-serif;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -102,7 +102,7 @@
   font-size: 2rem;
   font-weight: 700;
   color: #7A8E7A;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 .productsTable {
@@ -116,7 +116,7 @@
 .productsTable table {
   width: 100%;
   border-collapse: collapse;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 .productsTable th {
@@ -125,7 +125,7 @@
   padding: 1rem 1.2rem;
   text-align: left;
   font-weight: 600;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 0.88rem;
   letter-spacing: 0.5px;
   text-transform: uppercase;
@@ -153,7 +153,7 @@
   border-bottom: 1px solid #f0ebe6;
   color: #4a3f38;
   font-size: 0.93rem;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 .productsTable tbody tr:last-child td {
@@ -167,13 +167,13 @@
 .active {
   color: #5a8a5a;
   font-weight: 600;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 .inactive {
   color: #b05a5a;
   font-weight: 600;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 .editBtn, .deleteBtn {
@@ -184,7 +184,7 @@
   margin: 0 0.2rem;
   border-radius: 6px;
   font-size: 0.82rem;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Inter', sans-serif;
   transition: background 0.2s;
 }
 
@@ -231,7 +231,7 @@
 
 .modalContent h2 {
   color: #6E5A4E;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 1.4rem;
   font-weight: 700;
   margin-bottom: 1.5rem;
@@ -257,7 +257,7 @@
   font-size: 0.85rem;
   font-weight: 600;
   margin-bottom: 0.4rem;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Inter', sans-serif;
   letter-spacing: 0.3px;
 }
 
@@ -268,7 +268,7 @@
   border: 1.5px solid #d8cfc8;
   border-radius: 10px;
   font-size: 0.95rem;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Inter', sans-serif;
   color: #4a3f38;
   background: #faf8f6;
   transition: border-color 0.2s, box-shadow 0.2s;
@@ -285,7 +285,7 @@
 
 .formGroup textarea {
   resize: vertical;
-  min-height: 80px;
+  min-height: 150px;
 }
 
 .imageUrlRow {
@@ -309,7 +309,7 @@
   white-space: nowrap;
   font-size: 0.9rem;
   font-weight: 600;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Inter', sans-serif;
   transition: background 0.2s ease, transform 0.2s ease;
 }
 
@@ -353,7 +353,7 @@
   border-radius: 20px;
   font-size: 0.95rem;
   font-weight: 600;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Inter', sans-serif;
   cursor: pointer;
   transition: background 0.2s, transform 0.2s;
 }
@@ -386,7 +386,7 @@
   justify-content: center;
   min-height: 50vh;
   color: #6E5A4E;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 .spinner {

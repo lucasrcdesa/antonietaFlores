@@ -4,7 +4,7 @@
   background-color: #E8D8C8;
   display: flex;
   flex-direction: column;
-  font-family: 'Segoe UI', 'Dancing Script', cursive, sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 .mainContent {
@@ -311,6 +311,7 @@
 
   .productDescription {
     font-size: 1rem;
+    line-height: 1.75;
   }
 
   .price {
@@ -326,5 +327,28 @@
     width: 100%;
     max-width: none;
     text-align: center;
+  }
+}
+
+@media (max-width: 520px) {
+  .productName {
+    font-size: 1.35rem;
+  }
+
+  .productDescription {
+    font-size: 0.98rem;
+  }
+
+  .includesList li {
+    font-size: 0.9rem;
+  }
+
+  .price {
+    font-size: 1.55rem;
+  }
+
+  .whatsappBtn {
+    font-size: 1rem;
+    padding: 0.9rem 1.5rem;
   }
 }

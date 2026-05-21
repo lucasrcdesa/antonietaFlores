@@ -6,7 +6,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-family: 'Segoe UI', 'Dancing Script', cursive, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
+  line-height: 1.6;
   margin: 0;
   padding: 0;
   gap: 1.5rem;
@@ -40,7 +41,8 @@
 .hero-title {
   font-size: 2.5rem;
   color: #a8326e;
-  font-family: 'Dancing Script', cursive, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 700;
   margin-bottom: 0.5rem;
   text-shadow: 0 2px 8px #fff6fa;
 }
@@ -85,11 +87,40 @@
   color: #a8326e;
   font-size: 1.6rem;
   margin-bottom: 1rem;
-  font-family: 'Dancing Script', cursive, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 600;
 }
 .section-content {
   color: #a8326e;
   font-size: 1.1rem;
   line-height: 1.7;
+}
+
+@media (max-width: 768px) {
+  .homeContainer {
+    line-height: 1.7;
+  }
+}
+
+@media (max-width: 520px) {
+  .homeContainer {
+    gap: 1.2rem;
+  }
+
+  .hero-title {
+    font-size: 2.1rem;
+  }
+
+  .hero-desc {
+    font-size: 1.05rem;
+  }
+
+  .section-title {
+    font-size: 1.4rem;
+  }
+
+  .section-content {
+    font-size: 1rem;
+  }
 }
 

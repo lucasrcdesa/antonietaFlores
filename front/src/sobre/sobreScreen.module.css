@@ -5,7 +5,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 .contentWrapper {
@@ -30,7 +30,7 @@
   color: #6E5A4E;
   font-size: clamp(1.8rem, 4vw, 2.8rem);
   margin: 0 0 2rem;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-weight: 700;
   letter-spacing: 0.2px;
 }
@@ -67,7 +67,7 @@
   font-size: 1.05rem;
   line-height: 1.75;
   margin: 0;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: inherit;
 }
 
 .signature {
@@ -81,7 +81,7 @@
   font-size: 1.15rem;
   font-weight: 700;
   margin: 0;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: inherit;
 }
 
 .signatureTitle {
@@ -135,5 +135,24 @@
   .signature {
     margin-top: 1rem;
     padding-top: 1rem;
+  }
+}
+
+@media (max-width: 520px) {
+  .title {
+    font-size: 1.45rem;
+  }
+
+  .text {
+    font-size: 0.92rem;
+    line-height: 1.75;
+  }
+
+  .nameRole {
+    font-size: 1.05rem;
+  }
+
+  .signatureTitle {
+    font-size: 0.85rem;
   }
 }
