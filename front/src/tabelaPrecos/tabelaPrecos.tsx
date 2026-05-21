@@ -34,18 +34,18 @@ const TabelaPrecos = () => {
     <div className={styles.pageContainer}>
       <HomeHeader />
 
-      <main className={styles.main}>
-        <div className={styles.card}>
-          <div className={styles.cardHeader}>
-            <h1 className={styles.title}>Tabela de Preços</h1>
-            <p className={styles.subtitle}>Flores e arranjos para cada ocasião especial</p>
-          </div>
+      <div className={styles.pageHeader}>
+        <h1 className={styles.title}>Tabela de Preços</h1>
+        <p className={styles.subtitle}>Flores e arranjos para cada ocasião especial</p>
+      </div>
 
-          {loading ? (
-            <div className={styles.loading}>Carregando...</div>
-          ) : Object.keys(grouped).length === 0 ? (
-            <div className={styles.empty}>Nenhum produto disponível no momento.</div>
-          ) : (
+      <div className={styles.content}>
+        {loading ? (
+          <div className={styles.loading}>Carregando...</div>
+        ) : Object.keys(grouped).length === 0 ? (
+          <div className={styles.empty}>Nenhum produto disponível no momento.</div>
+        ) : (
+          <div className={styles.tableWrapper}>
             <table className={styles.table}>
               <thead>
                 <tr>
@@ -72,13 +72,12 @@ const TabelaPrecos = () => {
                 ))}
               </tbody>
             </table>
-          )}
-
-          <p className={styles.footer}>
-            * Preços sujeitos a alteração sem aviso prévio. Entre em contato para mais informações.
-          </p>
-        </div>
-      </main>
+            <p className={styles.footer}>
+              * Preços sujeitos a alteração sem aviso prévio. Entre em contato para mais informações.
+            </p>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

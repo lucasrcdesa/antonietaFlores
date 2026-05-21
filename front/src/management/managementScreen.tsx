@@ -29,6 +29,16 @@ const ManagementScreen = () => {
     const [imagensDisponiveis, setImagensDisponiveis] = useState<string[]>([]);
     const [loadingImages, setLoadingImages] = useState(false);
     const [imagePickerError, setImagePickerError] = useState<string | null>(null);
+    const [showCategoryModal, setShowCategoryModal] = useState(false);
+    const [novaCategoria, setNovaCategoria] = useState('');
+    const [categoriasExtras, setCategoriasExtras] = useState<string[]>(() => {
+        try {
+            return JSON.parse(localStorage.getItem('categorias_extras') || '[]');
+        } catch {
+            return [];
+        }
+    });
+
     const [formData, setFormData] = useState<Produto>({
         nome: '',
         tituloCapa: '',
@@ -256,6 +266,30 @@ const ManagementScreen = () => {
         return <span className={styles.sortIndicator}>{sortDirection === 'asc' ? '↑' : '↓'}</span>;
     };
 
+    const categoriasEmUso = [...new Set(produtos.map(p => p.categoria).filter(Boolean))];
+    const todasCategorias = [...new Set([...categoriasEmUso, ...categoriasExtras])].sort((a, b) =>
+        a.localeCompare(b, 'pt-BR', { sensitivity: 'base' })
+    );
+
+    const adicionarCategoria = () => {
+        const nome = novaCategoria.trim();
+        if (!nome) return;
+        if (todasCategorias.some(c => c.toLowerCase() === nome.toLowerCase())) {
+            setNovaCategoria('');
+            return;
+        }
+        const novas = [...categoriasExtras, nome];
+        setCategoriasExtras(novas);
+        localStorage.setItem('categorias_extras', JSON.stringify(novas));
+        setNovaCategoria('');
+    };
+
+    const removerCategoriaExtra = (cat: string) => {
+        const novas = categoriasExtras.filter(c => c !== cat);
+        setCategoriasExtras(novas);
+        localStorage.setItem('categorias_extras', JSON.stringify(novas));
+    };
+
     const openModal = () => {
         setEditingProduto(null);
         resetForm();
@@ -278,6 +312,9 @@ const ManagementScreen = () => {
                 <div className={styles.headerActions}>
                     <button onClick={openModal} className={styles.addBtn}>
                         ➕ Novo Produto
+                    </button>
+                    <button onClick={() => setShowCategoryModal(true)} className={styles.categoryBtn}>
+                        🏷️ Categorias
                     </button>
                     <button onClick={handleLogout} className={styles.logoutBtn}>
                         Sair
@@ -393,12 +430,16 @@ const ManagementScreen = () => {
                             <div className={styles.formRow}>
                                 <div className={styles.formGroup}>
                                     <label>Categoria</label>
-                                    <input
-                                        type="text"
+                                    <select
                                         value={formData.categoria}
                                         onChange={(e) => setFormData({...formData, categoria: e.target.value})}
                                         required
-                                    />
+                                    >
+                                        <option value="">Selecione uma categoria</option>
+                                        {todasCategorias.map(cat => (
+                                            <option key={cat} value={cat}>{cat}</option>
+                                        ))}
+                                    </select>
                                 </div>
                                 <div className={styles.formGroup}>
                                     <label>Status</label>
@@ -568,6 +609,75 @@ const ManagementScreen = () => {
                                 type="button"
                                 onClick={fecharImagePicker}
                                 className={styles.cancelBtn}
+                            >
+                                Fechar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {showCategoryModal && (
+                <div className={styles.modal}>
+                    <div className={styles.modalContent}>
+                        <h2>Gerenciar Categorias</h2>
+                        <p style={{ color: '#9A8F86', fontSize: '0.88rem', marginTop: 0 }}>
+                            Categorias em uso pelos produtos não podem ser removidas aqui. Edite os produtos primeiro.
+                        </p>
+
+                        <div className={styles.categoryList}>
+                            {todasCategorias.length === 0 && (
+                                <p style={{ color: '#9A8F86', textAlign: 'center', padding: '1rem 0' }}>
+                                    Nenhuma categoria cadastrada ainda.
+                                </p>
+                            )}
+                            {todasCategorias.map(cat => {
+                                const count = produtos.filter(p => p.categoria === cat).length;
+                                const podeRemover = count === 0;
+                                return (
+                                    <div key={cat} className={styles.categoryItem}>
+                                        <span className={styles.categoryName}>{cat}</span>
+                                        <span className={styles.categoryCount}>
+                                            {count > 0 ? `${count} produto${count > 1 ? 's' : ''}` : 'sem produtos'}
+                                        </span>
+                                        {podeRemover && (
+                                            <button
+                                                type="button"
+                                                onClick={() => removerCategoriaExtra(cat)}
+                                                className={styles.categoryRemoveBtn}
+                                                title="Remover categoria"
+                                            >
+                                                ✕
+                                            </button>
+                                        )}
+                                    </div>
+                                );
+                            })}
+                        </div>
+
+                        <div className={styles.categoryAddRow}>
+                            <input
+                                type="text"
+                                value={novaCategoria}
+                                onChange={(e) => setNovaCategoria(e.target.value)}
+                                onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), adicionarCategoria())}
+                                placeholder="Nova categoria..."
+                                className={styles.categoryInput}
+                            />
+                            <button
+                                type="button"
+                                onClick={adicionarCategoria}
+                                className={styles.categoryAddBtn}
+                            >
+                                Adicionar
+                            </button>
+                        </div>
+
+                        <div className={styles.modalActions}>
+                            <button
+                                type="button"
+                                onClick={() => { setShowCategoryModal(false); setNovaCategoria(''); }}
+                                className={styles.saveBtn}
                             >
                                 Fechar
                             </button>
