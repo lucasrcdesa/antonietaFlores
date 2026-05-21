@@ -174,8 +174,9 @@
 .productDescription {
   font-size: 1.05rem;
   color: #8F7F75;
-  line-height: 1.7;
+  line-height: 1.8;
   margin: 0;
+  text-align: left;
 }
 
 .includesSection {

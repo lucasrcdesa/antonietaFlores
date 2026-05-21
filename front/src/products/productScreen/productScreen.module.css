@@ -135,8 +135,8 @@
   margin: 0;
   font-size: 0.9rem;
   color: #9A8F86;
-  line-height: 1.5;
-  font-style: italic;
+  line-height: 1.6;
+  text-align: left;
 }
 
 .productFooter {
