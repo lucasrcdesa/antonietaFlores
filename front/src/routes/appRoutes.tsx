@@ -7,6 +7,7 @@ import ManagementScreen from "../management/managementScreen";
 import SobreScreen from "../sobre/sobreScreen";
 import ContactScreen from "../contato/contactScreen";
 import RequireAuth from "./RequireAuth";
+import TabelaPrecos from "../tabelaPrecos/tabelaPrecos";
 
 const AppRoutes = () => {
   return (
@@ -26,6 +27,7 @@ const AppRoutes = () => {
         />
         <Route path="/contato" element={<ContactScreen />} />
         <Route path="/sobre" element={<SobreScreen />} />
+        <Route path="/tabela-precos" element={<TabelaPrecos />} />
       </Routes>
     </BrowserRouter>
   );

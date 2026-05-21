@@ -5,9 +5,10 @@ import styles from './managementScreen.module.css';
 interface Produto {
     id?: number;
     nome: string;
+    tituloCapa?: string;
     descricao: string;
     preco: number;
-    quantidadeEstoque: number;
+    quantidadeEstoque?: number;
     ativo: boolean;
     categoria: string;
     imagemUrl: string;
@@ -30,9 +31,9 @@ const ManagementScreen = () => {
     const [imagePickerError, setImagePickerError] = useState<string | null>(null);
     const [formData, setFormData] = useState<Produto>({
         nome: '',
+        tituloCapa: '',
         descricao: '',
         preco: 0,
-        quantidadeEstoque: 0,
         ativo: true,
         categoria: '',
         imagemUrl: ''
@@ -221,9 +222,9 @@ const ManagementScreen = () => {
     const resetForm = () => {
         setFormData({
             nome: '',
+            tituloCapa: '',
             descricao: '',
             preco: 0,
-            quantidadeEstoque: 0,
             ativo: true,
             categoria: '',
             imagemUrl: ''
@@ -296,12 +297,6 @@ const ManagementScreen = () => {
                             {produtos.filter(p => p.ativo).length}
                         </p>
                     </div>
-                    <div className={styles.statCard}>
-                        <h3>Estoque Total</h3>
-                        <p className={styles.statNumber}>
-                            {produtos.reduce((sum, p) => sum + p.quantidadeEstoque, 0)}
-                        </p>
-                    </div>
                 </div>
 
                 <div className={styles.productsTable}>
@@ -312,7 +307,6 @@ const ManagementScreen = () => {
                                 <th className={styles.thSortable} onClick={() => handleSort('nome')}>Nome {sortIcon('nome')}</th>
                                 <th className={styles.thSortable} onClick={() => handleSort('categoria')}>Categoria {sortIcon('categoria')}</th>
                                 <th className={styles.thSortable} onClick={() => handleSort('preco')}>Preço {sortIcon('preco')}</th>
-                                <th className={styles.thSortable} onClick={() => handleSort('quantidadeEstoque')}>Estoque {sortIcon('quantidadeEstoque')}</th>
                                 <th className={styles.thSortable} onClick={() => handleSort('ativo')}>Status {sortIcon('ativo')}</th>
                                 <th>Ações</th>
                             </tr>
@@ -324,7 +318,6 @@ const ManagementScreen = () => {
                                     <td>{produto.nome}</td>
                                     <td>{produto.categoria}</td>
                                     <td>R$ {produto.preco.toFixed(2)}</td>
-                                    <td>{produto.quantidadeEstoque}</td>
                                     <td>
                                         <span className={produto.ativo ? styles.active : styles.inactive}>
                                             {produto.ativo ? 'Ativo' : 'Inativo'}
@@ -367,11 +360,20 @@ const ManagementScreen = () => {
                             </div>
 
                             <div className={styles.formGroup}>
+                                <label>Descrição Capa <span style={{fontWeight: 400, color: '#9A8F86', fontSize: '0.8rem'}}>(frase curta exibida no card)</span></label>
+                                <input
+                                    type="text"
+                                    value={formData.tituloCapa ?? ''}
+                                    onChange={(e) => setFormData({...formData, tituloCapa: e.target.value})}
+                                    placeholder="Ex: Delicado e sofisticado"
+                                />
+                            </div>
+
+                            <div className={styles.formGroup}>
                                 <label>Descrição</label>
                                 <textarea
                                     value={formData.descricao}
                                     onChange={(e) => setFormData({...formData, descricao: e.target.value})}
-                                    required
                                 />
                             </div>
 
@@ -383,15 +385,6 @@ const ManagementScreen = () => {
                                         step="0.01"
                                         value={formData.preco}
                                         onChange={(e) => setFormData({...formData, preco: parseFloat(e.target.value)})}
-                                        required
-                                    />
-                                </div>
-                                <div className={styles.formGroup}>
-                                    <label>Estoque</label>
-                                    <input
-                                        type="number"
-                                        value={formData.quantidadeEstoque}
-                                        onChange={(e) => setFormData({...formData, quantidadeEstoque: parseInt(e.target.value)})}
                                         required
                                     />
                                 </div>

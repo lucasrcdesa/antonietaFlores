@@ -2,6 +2,7 @@ export type ProductProps = {
   id?: number;
   sku: string;
   nome: string;
+  tituloCapa?: string;
   descricao: string;
   preco: number;
   quantidadeEstoque: number;

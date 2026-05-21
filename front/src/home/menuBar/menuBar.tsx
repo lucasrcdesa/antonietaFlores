@@ -1,4 +1,4 @@
-import { FlowerIcon, HeartIcon, HouseIcon, PhoneIcon } from "@phosphor-icons/react";
+import { FlowerIcon, HeartIcon, HouseIcon, PhoneIcon, TagIcon } from "@phosphor-icons/react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./menuBar.module.css";
 
@@ -43,6 +43,10 @@ const MenuBar = ({ isOpen, onClose }: MenuBarProps) => {
           <button type="button" className={styles.menuItem} onClick={() => handleNavigation("/contato")}>
             <span className={styles.menuIcon}><PhoneIcon/></span>
             Contato
+          </button>
+          <button type="button" className={styles.menuItem} onClick={() => handleNavigation("/tabela-precos")}>
+            <span className={styles.menuIcon}><TagIcon/></span>
+            Tabela de Preços
           </button>
         </div>
         <div className={styles.menuFooter}>

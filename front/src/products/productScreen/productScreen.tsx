@@ -199,7 +199,7 @@ const ProductScreen = () => {
                 </div>
                 <div className={styles.productInfo}>
                   <h3 className={styles.productName}>{product.nome}</h3>
-                  <p className={styles.productDescription}>{product.descricao}</p>
+                  <p className={styles.productDescription}>{product.tituloCapa || product.descricao}</p>
                   <div className={styles.productFooter}>
                     <span className={styles.productPrice}>
                       {formatProductPrice(product.preco)}
