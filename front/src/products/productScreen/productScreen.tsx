@@ -78,6 +78,9 @@ const ProductScreen = () => {
         const uniqueCategories = [...new Set(activeProducts.map(product => product.categoria))]
           .filter(cat => categoriasExtras.includes(cat))
           .sort();
+        setCategories(uniqueCategories);
+
+        void preloadProductImages(activeProducts);
       }
     } catch (error) {
       console.error('Erro ao carregar produtos:', error);
