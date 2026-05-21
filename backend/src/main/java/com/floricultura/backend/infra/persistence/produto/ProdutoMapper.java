@@ -10,6 +10,7 @@ public class ProdutoMapper {
         entity.setId(produto.getId());
         entity.setSku(produto.getSKU());
         entity.setNome(produto.getNome());
+        entity.setTituloCapa(produto.getTituloCapa());
         entity.setDescricao(produto.getDescricao());
         entity.setPreco(produto.getPreco());
         entity.setQuantidadeEstoque(produto.getQuantidadeEstoque());
@@ -27,6 +28,7 @@ public class ProdutoMapper {
                 entity.getId(),
                 entity.getSku(),
                 entity.getNome(),
+                entity.getTituloCapa(),
                 entity.getDescricao(),
                 entity.getPreco(),
                 entity.getQuantidadeEstoque(),

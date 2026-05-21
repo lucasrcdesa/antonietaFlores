@@ -14,6 +14,7 @@ public class Produto {
     private Long id;
     private String sku;
     private String nome;
+    private String tituloCapa;
     private String descricao;
     private BigDecimal preco;
     private String imagemUrl;
@@ -26,11 +27,12 @@ public class Produto {
     public Produto() {
     }
 
-    public Produto(Long id, String sku, String nome, String descricao, BigDecimal preco, Integer quantidadeEstoque, 
+    public Produto(Long id, String sku, String nome, String tituloCapa, String descricao, BigDecimal preco, Integer quantidadeEstoque,
                    Boolean ativo, String categoria, String imagemUrl, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.sku = sku;
         this.nome = nome;
+        this.tituloCapa = tituloCapa;
         this.descricao = descricao;
         this.preco = preco;
         this.quantidadeEstoque = quantidadeEstoque;
@@ -40,8 +42,6 @@ public class Produto {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
-
-    public Long getId() {
         return id;
     }
 
@@ -62,6 +62,14 @@ public class Produto {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public String getTituloCapa() {
+        return tituloCapa;
+    }
+
+    public void setTituloCapa(String tituloCapa) {
+        this.tituloCapa = tituloCapa;
     }
 
     public String getDescricao() {

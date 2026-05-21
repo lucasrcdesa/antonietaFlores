@@ -143,7 +143,7 @@
 .productsTable th {
   background: #7A8E7A;
   color: #F7F2ED;
-  padding: 1rem 1.2rem;
+  padding: 1rem 1.8rem;
   text-align: left;
   font-weight: 600;
   font-family: 'Inter', sans-serif;
@@ -170,7 +170,7 @@
 }
 
 .productsTable td {
-  padding: 0.85rem 1.2rem;
+  padding: 0.85rem 1.8rem;
   border-bottom: 1px solid #f0ebe6;
   color: #4a3f38;
   font-size: 0.93rem;
@@ -474,6 +474,51 @@
 
 .categoryRemoveBtn:hover {
   background: #f5e8e8;
+}
+
+.categoryEditBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #5a7e8a;
+  font-size: 0.85rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+  line-height: 1;
+  transition: background 0.15s;
+}
+
+.categoryEditBtn:hover {
+  background: #e8f0ed;
+}
+
+.categoryConfirmBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #5a8a5a;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+  line-height: 1;
+  transition: background 0.15s;
+}
+
+.categoryConfirmBtn:hover {
+  background: #e8f5e8;
+}
+
+.categoryEditInput {
+  flex: 1;
+  padding: 0.3rem 0.6rem;
+  border: 1.5px solid #7A8E7A;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-family: 'Inter', sans-serif;
+  color: #4a3f38;
+  background: #fff;
+  outline: none;
 }
 
 .categoryAddRow {

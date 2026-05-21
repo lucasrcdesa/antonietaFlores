@@ -3,6 +3,7 @@ package com.floricultura.backend.infra.persistence.produto;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,6 +20,9 @@ public class ProdutoEntity {
 
     private String sku;
     private String nome;
+    private String tituloCapa;
+
+    @Column(columnDefinition = "TEXT")
     private String descricao;
     private BigDecimal preco;
     private Integer quantidadeEstoque;
@@ -51,6 +55,14 @@ public class ProdutoEntity {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public String getTituloCapa() {
+        return tituloCapa;
+    }
+
+    public void setTituloCapa(String tituloCapa) {
+        this.tituloCapa = tituloCapa;
     }
 
     public String getDescricao() {

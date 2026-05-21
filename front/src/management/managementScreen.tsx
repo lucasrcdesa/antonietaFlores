@@ -31,6 +31,7 @@ const ManagementScreen = () => {
     const [imagePickerError, setImagePickerError] = useState<string | null>(null);
     const [showCategoryModal, setShowCategoryModal] = useState(false);
     const [novaCategoria, setNovaCategoria] = useState('');
+    const [editingCategory, setEditingCategory] = useState<{ original: string; draft: string } | null>(null);
     const [categoriasExtras, setCategoriasExtras] = useState<string[]>(() => {
         try {
             return JSON.parse(localStorage.getItem('categorias_extras') || '[]');
@@ -250,8 +251,10 @@ const ManagementScreen = () => {
         }
     };
 
+    const produtosFiltrados = produtos.filter(p => categoriasExtras.includes(p.categoria));
+
     const sortedProdutos = sortField
-        ? [...produtos].sort((a, b) => {
+        ? [...produtosFiltrados].sort((a, b) => {
             const aVal = a[sortField];
             const bVal = b[sortField];
             if (aVal === undefined || aVal === null) return 1;
@@ -259,7 +262,7 @@ const ManagementScreen = () => {
             const cmp = aVal < bVal ? -1 : aVal > bVal ? 1 : 0;
             return sortDirection === 'asc' ? cmp : -cmp;
         })
-        : produtos;
+        : produtosFiltrados;
 
     const sortIcon = (field: keyof Produto) => {
         if (sortField !== field) return <span className={styles.sortIndicator}>↕</span>;
@@ -288,6 +291,32 @@ const ManagementScreen = () => {
         const novas = categoriasExtras.filter(c => c !== cat);
         setCategoriasExtras(novas);
         localStorage.setItem('categorias_extras', JSON.stringify(novas));
+    };
+
+    const renomearCategoria = async (original: string, novoNome: string) => {
+        const nome = novoNome.trim();
+        if (!nome || nome === original) { setEditingCategory(null); return; }
+        if (todasCategorias.some(c => c.toLowerCase() === nome.toLowerCase() && c !== original)) {
+            alert(`Já existe uma categoria com o nome "${nome}".`);
+            return;
+        }
+        const token = localStorage.getItem('token');
+        if (!token) { navigate('/login'); return; }
+        const produtosAfetados = produtos.filter(p => p.categoria === original);
+        await Promise.all(
+            produtosAfetados.map(p =>
+                fetch(`/api/produtos/${p.id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ ...p, categoria: nome })
+                })
+            )
+        );
+        const novas = categoriasExtras.map(c => (c === original ? nome : c));
+        setCategoriasExtras(novas);
+        localStorage.setItem('categorias_extras', JSON.stringify(novas));
+        setEditingCategory(null);
+        loadProdutos();
     };
 
     const openModal = () => {
@@ -621,9 +650,6 @@ const ManagementScreen = () => {
                 <div className={styles.modal}>
                     <div className={styles.modalContent}>
                         <h2>Gerenciar Categorias</h2>
-                        <p style={{ color: '#9A8F86', fontSize: '0.88rem', marginTop: 0 }}>
-                            Categorias em uso pelos produtos não podem ser removidas aqui. Edite os produtos primeiro.
-                        </p>
 
                         <div className={styles.categoryList}>
                             {todasCategorias.length === 0 && (
@@ -633,22 +659,66 @@ const ManagementScreen = () => {
                             )}
                             {todasCategorias.map(cat => {
                                 const count = produtos.filter(p => p.categoria === cat).length;
-                                const podeRemover = count === 0;
+                                const isEditing = editingCategory?.original === cat;
                                 return (
                                     <div key={cat} className={styles.categoryItem}>
-                                        <span className={styles.categoryName}>{cat}</span>
+                                        {isEditing ? (
+                                            <input
+                                                autoFocus
+                                                className={styles.categoryEditInput}
+                                                value={editingCategory.draft}
+                                                onChange={(e) => setEditingCategory({ original: cat, draft: e.target.value })}
+                                                onKeyDown={(e) => {
+                                                    if (e.key === 'Enter') renomearCategoria(cat, editingCategory.draft);
+                                                    if (e.key === 'Escape') setEditingCategory(null);
+                                                }}
+                                            />
+                                        ) : (
+                                            <span className={styles.categoryName}>{cat}</span>
+                                        )}
                                         <span className={styles.categoryCount}>
                                             {count > 0 ? `${count} produto${count > 1 ? 's' : ''}` : 'sem produtos'}
                                         </span>
-                                        {podeRemover && (
-                                            <button
-                                                type="button"
-                                                onClick={() => removerCategoriaExtra(cat)}
-                                                className={styles.categoryRemoveBtn}
-                                                title="Remover categoria"
-                                            >
-                                                ✕
-                                            </button>
+                                        {isEditing ? (
+                                            <>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => renomearCategoria(cat, editingCategory.draft)}
+                                                    className={styles.categoryConfirmBtn}
+                                                    title="Salvar nome"
+                                                >
+                                                    ✓
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setEditingCategory(null)}
+                                                    className={styles.categoryRemoveBtn}
+                                                    title="Cancelar"
+                                                >
+                                                    ✕
+                                                </button>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setEditingCategory({ original: cat, draft: cat })}
+                                                    className={styles.categoryEditBtn}
+                                                    title="Editar nome"
+                                                >
+                                                    ✏️
+                                                </button>
+                                                {count === 0 && (
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => removerCategoriaExtra(cat)}
+                                                        className={styles.categoryRemoveBtn}
+                                                        title="Remover categoria"
+                                                    >
+                                                        ✕
+                                                    </button>
+                                                )}
+                                            </>
                                         )}
                                     </div>
                                 );

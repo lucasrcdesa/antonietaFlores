@@ -67,15 +67,17 @@ const ProductScreen = () => {
         setProducts(activeProducts);
         setFilteredProducts(activeProducts);
 
-        // Extrair categorias únicas e ordenar alfabeticamente
-        const uniqueCategories = [...new Set(activeProducts.map(product => product.categoria))].sort();
-        setCategories(uniqueCategories);
-
-        // Nao bloqueia a exibicao dos cards enquanto as imagens sao pré-carregadas.
-        void preloadProductImages(activeProducts);
-      } else if (response.status === 401) {
-        // Token expirado, redirecionar para login
-        navigate('/login');
+        // Extrair categorias únicas que ainda existem na lista de categorias salvas
+        const categoriasExtras: string[] = (() => {
+          try {
+            return JSON.parse(localStorage.getItem('categorias_extras') || '[]');
+          } catch {
+            return [];
+          }
+        })();
+        const uniqueCategories = [...new Set(activeProducts.map(product => product.categoria))]
+          .filter(cat => categoriasExtras.includes(cat))
+          .sort();
       }
     } catch (error) {
       console.error('Erro ao carregar produtos:', error);
