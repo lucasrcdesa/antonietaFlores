@@ -6,9 +6,6 @@ const Contact: React.FC = () => {
     <div className={styles.contactContainer}>
       <h1>Contato</h1>
       <p>Entre em contato conosco para mais informações sobre nossos produtos e serviços.</p>
-      <a href="mailto:email@antonieta.com.br" className={styles.emailLink}>
-        email@antonieta.com.br
-      </a>
 
       <div className={styles.contactRow}>
         <WhatsappLogoIcon className={`${styles.icon} ${styles.whatsappIcon}`} weight="regular" />
