@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import HomeHeader from "../home/homeHeader/homeHeader";
 import styles from "./tabelaPrecos.module.css";
 import type { ProductProps } from "../interfaces/productProps";
@@ -11,6 +12,7 @@ const formatPrice = (price: number): string => {
 const TabelaPrecos = () => {
   const [grouped, setGrouped] = useState<Record<string, ProductProps[]>>({});
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch("/api/produtos")
@@ -62,7 +64,8 @@ const TabelaPrecos = () => {
                     {products.map((product, idx) => (
                       <tr
                         key={product.id}
-                        className={idx % 2 === 0 ? styles.rowEven : styles.rowOdd}
+                        className={`${idx % 2 === 0 ? styles.rowEven : styles.rowOdd} ${styles.rowClickable}`}
+                        onClick={() => navigate(`/produtos/${product.id}`, { state: { product } })}
                       >
                         <td className={styles.tdName}>{product.nome}</td>
                         <td className={styles.tdPrice}>{formatPrice(product.preco)}</td>

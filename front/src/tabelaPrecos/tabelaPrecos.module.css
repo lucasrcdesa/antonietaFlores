@@ -102,6 +102,16 @@
   background: #f7f4f1;
 }
 
+.rowClickable {
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.rowClickable:hover td {
+  background: #eef4ee;
+  color: #4a3f38;
+}
+
 .tdName,
 .tdPrice {
   padding: 0.85rem 1.5rem;
