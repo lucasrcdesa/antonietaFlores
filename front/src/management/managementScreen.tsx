@@ -39,6 +39,12 @@ const ManagementScreen = () => {
             return [];
         }
     });
+    const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+
+    const showToast = (message: string, type: 'success' | 'error' = 'success') => {
+        setToast({ message, type });
+        setTimeout(() => setToast(null), 3000);
+    };
 
     const [formData, setFormData] = useState<Produto>({
         nome: '',
@@ -176,6 +182,7 @@ const ManagementScreen = () => {
                 setEditingProduto(null);
                 resetForm();
                 loadProdutos();
+                showToast(editingProduto ? 'Produto atualizado com sucesso!' : 'Produto criado com sucesso!');
                 return;
             }
 
@@ -213,6 +220,7 @@ const ManagementScreen = () => {
 
             if (response.ok) {
                 loadProdutos();
+                showToast('Produto excluído com sucesso!');
                 return;
             }
 
@@ -336,6 +344,11 @@ const ManagementScreen = () => {
 
     return (
         <div className={styles.managementContainer}>
+            {toast && (
+                <div className={`${styles.toast} ${styles[`toast_${toast.type}`]}`}>
+                    {toast.message}
+                </div>
+            )}
             <header className={styles.header}>
                 <h1 className={styles.title}>Central de Gerenciamento</h1>
                 <div className={styles.headerActions}>

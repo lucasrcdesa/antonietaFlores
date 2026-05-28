@@ -177,6 +177,8 @@
   line-height: 1.8;
   margin: 0;
   text-align: left;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .includesSection {
