@@ -48,7 +48,10 @@ public class SecurityConfigurations {
                         // 🔓 CORS (preflight)
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
-                        // 🔒 TODO RESTO
+                        // � ACTUATOR (health check)
+                        .requestMatchers("/actuator/health", "/actuator/info").permitAll()
+
+                        // �🔒 TODO RESTO
                         .anyRequest().authenticated()
                 )
 
