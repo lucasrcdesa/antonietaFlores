@@ -110,6 +110,25 @@
   font-size: 1rem;
 }
 
+.ctaButton {
+  margin-top: 1.5rem;
+  align-self: flex-start;
+  padding: 0.65rem 1.5rem;
+  background: #6E5A4E;
+  color: #F7F2ED;
+  border: none;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.ctaButton:hover {
+  background: #5a4840;
+  transform: scale(1.03);
+}
+
 .indicators {
   margin-top: 1rem;
   display: flex;

@@ -8,6 +8,7 @@ import SobreScreen from "../sobre/sobreScreen";
 import ContactScreen from "../contato/contactScreen";
 import RequireAuth from "./RequireAuth";
 import TabelaPrecos from "../tabelaPrecos/tabelaPrecos";
+import NamoradosScreen from "../pdfs/namoradosScreen";
 
 const AppRoutes = () => {
   return (
@@ -28,6 +29,7 @@ const AppRoutes = () => {
         <Route path="/contato" element={<ContactScreen />} />
         <Route path="/sobre" element={<SobreScreen />} />
         <Route path="/tabela-precos" element={<TabelaPrecos />} />
+        <Route path="/namorados" element={<NamoradosScreen />} />
       </Routes>
     </BrowserRouter>
   );

@@ -48,6 +48,10 @@ const MenuBar = ({ isOpen, onClose }: MenuBarProps) => {
             <span className={styles.menuIcon}><TagIcon/></span>
             Tabela de Preços
           </button>
+          <button type="button" className={styles.menuItem} onClick={() => handleNavigation("/namorados")}>
+            <span className={styles.menuIcon}><HeartIcon/></span>
+            Dia dos Namorados
+          </button>
         </div>
         <div className={styles.menuFooter}>
           <p>Antonieta Flores</p>

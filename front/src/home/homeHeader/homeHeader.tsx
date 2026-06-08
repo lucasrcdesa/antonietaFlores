@@ -25,6 +25,10 @@ const HomeHeader = () => {
     navigate("/tabela-precos");
   };
 
+  const handleNamorados = () => {
+    navigate("/namorados");
+  };
+
   return (
     <>
       <MenuBar isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
@@ -52,6 +56,7 @@ const HomeHeader = () => {
             <button type="button" className={styles.navButton} onClick={handleHomeButton}>Início</button>
             <button type="button" className={styles.navButton} onClick={handleProdutosButton}>Produtos</button>
             <button type="button" className={styles.navButton} onClick={handleTabelaPrecos}>Tabela de Preços</button>
+            <button type="button" className={styles.navButton} onClick={handleNamorados}>Dia dos Namorados</button>
             <button type="button" className={styles.navButton} onClick={handleContatoButton}>Contato</button>
           </nav>
         </div>

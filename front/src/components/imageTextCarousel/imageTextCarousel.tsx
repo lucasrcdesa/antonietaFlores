@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import capa from "../../assets/capa.jpeg";
 import capa2 from "../../assets/capa2.jpeg";
 import capa3 from "../../assets/capa3.jpeg";
+import namorados from "../../assets/namorados.jpeg";
 
 
 
@@ -9,6 +11,14 @@ import capa3 from "../../assets/capa3.jpeg";
 import styles from "./imageTextCarousel.module.css";
 
 const slides = [
+  {
+    image: namorados,
+    title: "Pressenteie seu amor nessa data especial",
+    description:
+      "Surpreenda seu amor com um presente que fala ao coração. Nossos arranjos exclusivos são a escolha perfeita para expressar seus sentimentos neste Dia dos Namorados.",
+    ctaLabel: "Ver catálogo",
+    ctaPath: "/namorados",
+  },
   {
     image: capa2,
     title: "Bem-vindo à Antonieta Flores!",
@@ -32,6 +42,7 @@ const slides = [
 const ImageTextCarousel = () => {
   const [current, setCurrent] = useState(0);
   const [loadedSlides, setLoadedSlides] = useState<Record<number, boolean>>({});
+  const navigate = useNavigate();
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -72,6 +83,15 @@ const ImageTextCarousel = () => {
         <div className={styles.text}>
           <h2>{slide.title}</h2>
           <p>{slide.description}</p>
+          {"ctaPath" in slide && slide.ctaPath && (
+            <button
+              type="button"
+              className={styles.ctaButton}
+              onClick={() => navigate(slide.ctaPath!)}
+            >
+              {slide.ctaLabel}
+            </button>
+          )}
         </div>
       </div>
 

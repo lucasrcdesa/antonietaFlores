@@ -1,0 +1,47 @@
+.pageContainer {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #E8D8C8;
+  font-family: 'Inter', sans-serif;
+}
+
+.pageHeader {
+  background: linear-gradient(135deg, #F7F2ED 0%, #FFFFFF 100%);
+  padding: 1.5rem 3rem;
+  box-shadow: 0 4px 20px rgba(110, 90, 78, 0.12);
+  border-bottom: 3px solid rgba(122, 142, 122, 0.2);
+}
+
+.title {
+  color: #6E5A4E;
+  font-family: 'Inter', sans-serif;
+  font-size: 1.8rem;
+  margin: 0 0 0.2rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.subtitle {
+  font-size: 0.9rem;
+  color: #9A8F86;
+  margin: 0;
+  font-style: italic;
+}
+
+.content {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}
+
+.pdfFrame {
+  width: 100%;
+  height: calc(100vh - 200px);
+  min-height: 600px;
+  border: none;
+  border-radius: 18px;
+  box-shadow: 0 2px 12px rgba(110, 90, 78, 0.15);
+  background: white;
+}
