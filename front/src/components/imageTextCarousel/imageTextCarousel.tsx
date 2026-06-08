@@ -13,7 +13,7 @@ import styles from "./imageTextCarousel.module.css";
 const slides = [
   {
     image: namorados,
-    title: "Pressenteie seu amor nessa data especial",
+    title: "Presenteie seu amor nessa data especial",
     description:
       "Surpreenda seu amor com um presente que fala ao coração. Nossos arranjos exclusivos são a escolha perfeita para expressar seus sentimentos neste Dia dos Namorados.",
     ctaLabel: "Ver catálogo",
@@ -64,9 +64,18 @@ const ImageTextCarousel = () => {
     });
   };
 
+  const ctaPath = "ctaPath" in slide ? slide.ctaPath : undefined;
+
   return (
     <div className={styles.carouselWrapper}>
-      <div className={styles.carouselContainer}>
+      <div
+        className={`${styles.carouselContainer} ${ctaPath ? styles.carouselClickable : ""}`}
+        onClick={() => ctaPath && navigate(ctaPath)}
+        role={ctaPath ? "button" : undefined}
+        tabIndex={ctaPath ? 0 : undefined}
+        onKeyDown={ctaPath ? (e) => e.key === "Enter" && navigate(ctaPath) : undefined}
+        aria-label={ctaPath ? slide.title : undefined}
+      >
         <div className={styles.slide}>
           {!isCurrentSlideLoaded && (
             <div className={styles.imageLoader} aria-label="Carregando banner">
@@ -83,15 +92,6 @@ const ImageTextCarousel = () => {
         <div className={styles.text}>
           <h2>{slide.title}</h2>
           <p>{slide.description}</p>
-          {"ctaPath" in slide && slide.ctaPath && (
-            <button
-              type="button"
-              className={styles.ctaButton}
-              onClick={() => navigate(slide.ctaPath!)}
-            >
-              {slide.ctaLabel}
-            </button>
-          )}
         </div>
       </div>
 
