@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import capa from "../../assets/capa.jpeg";
 import capa2 from "../../assets/capa2.jpeg";
 import capa3 from "../../assets/capa3.jpeg";
-import namorados from "../../assets/namorados.jpeg";
+// --- NAMORADOS 2025 --- Descomentar quando chegar a época ---
+// import namorados from "../../assets/namorados.jpeg";
 
 
 
@@ -11,14 +12,15 @@ import namorados from "../../assets/namorados.jpeg";
 import styles from "./imageTextCarousel.module.css";
 
 const slides = [
-  {
-    image: namorados,
-    title: "Presenteie seu amor nessa data especial",
-    description:
-      "Surpreenda seu amor com um presente que fala ao coração. Nossos arranjos exclusivos são a escolha perfeita para expressar seus sentimentos neste Dia dos Namorados.",
-    ctaLabel: "Ver catálogo",
-    ctaPath: "/namorados",
-  },
+  // --- NAMORADOS 2025 --- Descomentar quando chegar a época ---
+  // {
+  //   image: namorados,
+  //   title: "Presenteie seu amor nessa data especial",
+  //   description:
+  //     "Surpreenda seu amor com um presente que fala ao coração. Nossos arranjos exclusivos são a escolha perfeita para expressar seus sentimentos neste Dia dos Namorados.",
+  //   ctaLabel: "Ver catálogo",
+  //   ctaPath: "/namorados",
+  // },
   {
     image: capa2,
     title: "Bem-vindo à Antonieta Flores!",

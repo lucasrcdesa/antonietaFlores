@@ -48,10 +48,12 @@ const MenuBar = ({ isOpen, onClose }: MenuBarProps) => {
             <span className={styles.menuIcon}><TagIcon/></span>
             Tabela de Preços
           </button>
+          {/* --- NAMORADOS 2025 --- Descomentar quando chegar a época ---
           <button type="button" className={styles.menuItem} onClick={() => handleNavigation("/namorados")}>
             <span className={styles.menuIcon}><HeartIcon/></span>
             Dia dos Namorados
           </button>
+          --- fim namorados --- */}
         </div>
         <div className={styles.menuFooter}>
           <p>Antonieta Flores</p>

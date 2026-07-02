@@ -25,9 +25,10 @@ const HomeHeader = () => {
     navigate("/tabela-precos");
   };
 
-  const handleNamorados = () => {
-    navigate("/namorados");
-  };
+  // --- NAMORADOS 2025 --- Descomentar quando chegar a época ---
+  // const handleNamorados = () => {
+  //   navigate("/namorados");
+  // };
 
   return (
     <>
@@ -56,7 +57,8 @@ const HomeHeader = () => {
             <button type="button" className={styles.navButton} onClick={handleHomeButton}>Início</button>
             <button type="button" className={styles.navButton} onClick={handleProdutosButton}>Produtos</button>
             <button type="button" className={styles.navButton} onClick={handleTabelaPrecos}>Tabela de Preços</button>
-            <button type="button" className={styles.navButton} onClick={handleNamorados}>Dia dos Namorados</button>
+            {/* --- NAMORADOS 2025 --- Descomentar quando chegar a época --- */}
+            {/* <button type="button" className={styles.navButton} onClick={handleNamorados}>Dia dos Namorados</button> */}
             <button type="button" className={styles.navButton} onClick={handleContatoButton}>Contato</button>
           </nav>
         </div>
